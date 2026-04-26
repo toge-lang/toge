@@ -1,6 +1,8 @@
 # The Basics
-All the basics(aka functions, boxes, variable stuff), all will be covered here.
-So lets begin with the FUN.
+All the basics(functions and variables), will be covered here.
+So lets begin with the FUN...
+
+...ctions. You thought you were gonna have fun huh? you thought you were gonna be enjoying life huh? No, now open VScode and get to work.
 
 ---
 ## Functions
@@ -36,29 +38,47 @@ Its quite simple actually.
 wrt(#name)
 ---outputs: Hello World!---
 ```
+The question is: *how do we update them?*
+Its actually just like in other languages, with the good ol' equation... thingy.
+```
+vrb("2plus2", int, 5) --- Uh oh! Little timmy is bad at kindergarten math.. ---
+#2plus2 = 4 --- since were his tutor, we correct them ---
+vrb("SchoolSign", txt, "Welcome students to Dips and Hits University!") --- hehe lets do a sick prank bro... ---
+#SchoolSign = "i am DipsHit!" --- LMAO ---
+```
 ---
 
-Heres an example program that declares and uses all variable types:
+Heres a program that declares and uses all variable types:
 
 ```
+---long one here, bare with me ---
 vrb("text", txt, "Hi!Im a text!")
 vrb("integer", int, 55)
+
 vrb("decimal_integer", dint, 55.5)
 vrb("array", arr, [13, "im the second part of the array", 68.4])
+
 vrb("object", obj, "object noises"; 15; 7863.98; "51") ---NOTE: numbers in quotes are stilled considered standard text---
 vrb("image", med, dsp(lcl, "C:\Documents\smiley_face.png"))
+
+
+
 wrt(#text) --- every comment from this point in this block will be the output: Hi!Im a text! ---
 wrt(#integer) --- 55 ---
+
 wrt(#decimal_integer) --- 55.5 ---
 wrt(#array[0]) --- 13 ---
+
 wrt(#array[1]) --- im the second part of the array ---
 wrt(#array[2]) --- 68.4 ---
+
 wrt(#array) --- 13 (new line) im the second part of the array (new line) 68.4 ---
 wrt(#object) --- {15, 7863.98, 51} ---
+
 wrt(#object{1}) --- {15} ---
 wrt(#object{2}) --- {7863.98} ---
+
 wrt(#object{3}) --- {51} ---
 wrt(#image) --- pretend the smiley_face.png image is here ---
 ```
-
 ---
