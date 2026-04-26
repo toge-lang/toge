@@ -10,15 +10,55 @@ So lets begin with the FUN.
 > [!NOTE]
 > any functions including opt after a part in the brackets, that means that part is optional to put. By "that part", it means starting from the last comma, or first bracket if there arent commas.
 ---
-Currently, there are 4 default functions.
-* ``wrt("")`` --> the print/output function for Toge.
+Currently, there are 5 default functions.
+* ``wrt("")`` --> the print/output function for Toge. Can output an image if the value is a `med` type variable thats an image.
 * ``tlk(l/n, "" opt)`` --> The ask/input function for Toge. L is for inputs requiring letters/characters, and N for number inputs.
 * ``ret(any)`` --> Instead of return being a keyword, in Toge, `return` is a function. It still has the same use, the value just goes in the brackets.
 * ``wait(m opt, n)`` --> The wait function for Toge. In Toge, you can specify a measuring unit for the wait, although optional, either `ms`(milisecond), `s`(second), `m`(minute), or `h`(hour).
+* ``vrb("", type opt, value opt)`` --> instead of being just a simple variable pronounce like ``let a = b``, it uses a function, with the text in "" being the variable name, and the type, although optional, can be set to `int` for numbers, `dint`(decimal integer) for numbers with decimals, `txt` for a text, `stt`(state) for true/false, `arr` for an array, `obj` for an object(variable with multiple values), and `med`(media) for images or audio(requiring the `IMG`, and respectively the `AUD` box for each). In most cases, the value is optional, but for media, it is *mandatory* to be a placeholder image/audio file, and the value must be either a `dps()` or an `aud()` function. In cases of the object type, there can be *multiple* values, each split by eachother with a ";".
 ---
 ### Boxes
 Boxes are the packages of Toge. Its just a different name. Currently there are 3 boxes in Toge.
 * ``!box TM`` --> imports the ``Ctm(AM/PM opt)`` function, getting the current time in the device's timezone. Default displays military time, but can be specified for AM/PM("AM/PM" needs to be introduced, not just "AM" or "PM")
 * ``!box IMG`` --> imports the ``dsp(url/lcl/srv, filepath, yXz px opt)`` function, which displays an image, either from an url, a local file, or a "server" file, a file found in the same folder/accesible database as the code file. the filepath is either the url or the file name and filepath. you can specify the width pixels by the y value, and the height by the z value. the X is mandatory, alongside "px". Only .png, .jpg, or .jpeg are allowed file types.(only "url", "lcl", or "srv" may be specified, not more at once)
 * ``!box AUD`` --> imports the ``aud(url/lcl/srv, filepath, N db opt, n% spd opt, n% rvrb opt)`` function, which plays an audio file, with the filepath thing being the same thing as ``dsp()``, and db, spd, and rvrb, each respectively control the volume, the speed, and the reverb(sound echo) of it. Only .mp3 and .mid are allowed file types.
+---
+## Variables
+> [!NOTE]
+> This information is based on assuming you already have read the info for the default ``vrb()`` function, seen [above](#functions).
+
+Alright, so we already learned how to declare/pronounce variables, now, how do we use them?
+Its quite simple actually.
+```
+#name = "Hello World!"
+---variable names, even in functions(except declaration), are always are beginned with a # to both help readabillity AND parser problems---
+
+wrt(#name)
+---outputs: Hello World!---
+```
+---
+
+Heres an example program that declares and uses all variable types:
+
+```
+vrb("text", txt, "Hi!Im a text!")
+vrb("integer", int, 55)
+vrb("decimal_integer", dint, 55.5)
+vrb("array", arr, [13, "im the second part of the array", 68.4])
+vrb("object", obj, "object noises"; 15; 7863.98; "51") ---NOTE: numbers in quotes are stilled considered standard text---
+vrb("image", med, dsp(lcl, "C:\Documents\smiley_face.png"))
+wrt(#text) --- every comment from this point in this block will be the output: Hi!Im a text! ---
+wrt(#integer) --- 55 ---
+wrt(#decimal_integer) --- 55.5 ---
+wrt(#array[0]) --- 13 ---
+wrt(#array[1]) --- im the second part of the array ---
+wrt(#array[2]) --- 68.4 ---
+wrt(#array) --- 13 (new line) im the second part of the array (new line) 68.4 ---
+wrt(#object) --- {15, 7863.98, 51} ---
+wrt(#object{1}) --- {15} ---
+wrt(#object{2}) --- {7863.98} ---
+wrt(#object{3}) --- {51} ---
+wrt(#image) --- pretend the smiley_face.png image is here ---
+```
+
 ---
