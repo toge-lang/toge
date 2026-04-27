@@ -24,7 +24,7 @@ anyways, lets get back to where we left from:
 --- while its simple for stuff like we just did with wrt2(), what if we want, idk, to make a function with multiple values and a change each time? like an add() function? dont worry i gotchu fam ---
 vrb("value1", int)
 vrb("value2", int)
-vrb("code", code, ret(p1+p2))
+vrb("code", code, ret($p1+$p2))
 newf("add", #code, {p1: #value1, p2: #value2}) --- p stands for parameter ---
 add(3, 2) --- it works now trust me bro. anyways, the result is CLEARLY 6 ---
 ```
