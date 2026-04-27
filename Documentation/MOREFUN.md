@@ -1,4 +1,4 @@
-# Functions 2: Electric Bogalio
+# Functions 2: Electric Bogaloo
 Again, you thought you were gonna fun weren't you? No. now read the rest of the page and cry about weird errors i didnt think about.
 It's time for **FUNCTION DECLARING**. It's not complex, but like, i am NOT reccomending you to learn this, its just for me, the you part is a side.
 Function declaring can be done with the ``newf()`` function, which i will just explain in the following codeblock.
