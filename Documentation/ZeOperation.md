@@ -49,7 +49,7 @@ Come on, speedrun!!
 <= smaller/equal
 !(compare operator) opposite of operatot
 +++ AND
---- NOT
+-+- NOT
 /+/ OR
 /-/ XOR
 ```
