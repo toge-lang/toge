@@ -23,10 +23,8 @@ anyways, lets get back to where we left from:
 --- while its simple for stuff like we just did with wrt2(), what if we want, idk, to make a function with multiple values and a change each time? like an add() function? dont worry i gotchu fam ---
 vrb("value1", int)
 vrb("value2", int)
-vrb("code", code, ret(#value1+#value2))
-value1 = tlk(n, "first value is...? ")
-value2 = tlk(n, "second value is...? ")
-newf("add", #code)
+vrb("code", code, ret(p1+p2))
+newf("add", #code, {p1: #value1, p2: #value2}) --- p stands for parameter ---
 ```
 That was a hard one.
 I think i MIGHT be losing my mind more and more with each new file.
