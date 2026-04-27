@@ -17,6 +17,7 @@ vrb("heloworl", code, ret("Hello World!")
 ```
 Its like declaring a function, but it doesnt have any actual output, not on its own, you can't just paste `#code` on a new line and call it a day.
 this type is literally made for this exact purpose: to make the value parameter of the `newf()` function be shorter, and not the megalodons of code in curly braces like other languages.
+Always, the first function in a code variable is started with the `ret()` function, and any piece of code in it is FORCED to be inside it, as without it it wouldnt be part of the variables value.
 anyways, lets get back to where we left from:
 ```
 -d we're all set... or are we? ---
@@ -25,6 +26,7 @@ vrb("value1", int)
 vrb("value2", int)
 vrb("code", code, ret(p1+p2))
 newf("add", #code, {p1: #value1, p2: #value2}) --- p stands for parameter ---
+add(3, 2) --- it works now trust me bro. anyways, the result is CLEARLY 6 ---
 ```
 That was a hard one.
 I think i MIGHT be losing my mind more and more with each new file.
