@@ -29,3 +29,4 @@ value2 = tlk(n, "second value is...? ")
 newf("add", #code)
 ```
 That was a hard one.
+I think i MIGHT be losing my mind more and more with each new file.
