@@ -13,7 +13,7 @@ Does that mean...
 hell yeah it does.
 In the basics, i forgot to mention the `code` type, which is just lines of code put as a variable, so you save space in the editor with the same parser result.
 ```
-vrb("heloworl", code, ret("Hello World!")
+vrb("heloworl", code, ret("Hello World!"))
 ```
 Its like declaring a function, but it doesnt have any actual output, not on its own, you can't just paste `#code` on a new line and call it a day.
 this type is literally made for this exact purpose: to make the value parameter of the `newf()` function be shorter, and not the megalodons of code in curly braces like other languages.
