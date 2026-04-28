@@ -9,11 +9,11 @@ Here's an example program in Toge(colors and pluses are used for decor):
 ---Comment---
 + wrt("Hello World!");
 ---"Hello World!", wrt is write---
-+ vrb FOOD = tlk(ltr, "What's your favorite food?")
----'Whats your favorite food?' ...(user input). tlk is talk.---
-+ if(FOOD == "Banana") thn [wrt("Mine too!")]
---- thn is then. If the previous answer was Banana, then it responds with "Mine too!" ---
-+ els thn [wrt("What's that?")]
---- ...thn if not(els is else), it responds with "What's that?" ---
++ vrb("FOOD", txt, ret(tlk(l, "What's your favorite food?")))
+---'Whats your favorite food?' ...(user input). tlk is talk. Normally only code variables(later on) can use ret(), but strictly ret(tlk(l, "")) is allowed for txt variables. ---
++ if(FOOD =? "Banana") [wrt("Mine too!")]
++ else [wrt("What's that?")]
+--- If the response was Banana, then it says "Mine too!", without quotes, if not, says "What's that?" without quotes. ---
 ```
 This is literally all i need to put here.
+Good luck to whoever is learning this , you'll need it.
