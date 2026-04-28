@@ -6,9 +6,6 @@ So lets begin with the FUN...
 
 ---
 ## Functions
-> [!IMPORTANT]
-> This article will be updated as the development progresses. Currently, everything in the documentation is for the first alpha release of Toge. Functions are not the only case in which this is true.
-
 > [!NOTE]
 > any functions including opt after a part in the brackets, that means that part is optional to put. By "that part", it means starting from the last comma, or first bracket if there arent commas.
 ---
@@ -41,8 +38,8 @@ wrt(#name)
 The question is: *how do we update them?*
 Its actually just like in other languages, with the good ol' equation... thingy.
 ```
-vrb("2plus2", int, 5) --- Uh oh! Little timmy is bad at kindergarten math.. ---
-#2plus2 = 4 --- since were his tutor, we correct them ---
+vrb("twoplus2", int, 5) --- Uh oh! Little timmy is bad at kindergarten math.. ---
+#twoplus2 = 4 --- since were his tutor, we correct them ---
 vrb("SchoolSign", txt, "Welcome students to Dips and Hits University!") --- hehe lets do a sick prank bro... ---
 #SchoolSign = "i am DipsHit!" --- LMAO ---
 ```
@@ -58,9 +55,8 @@ vrb("integer", int, 55)
 vrb("decimal_integer", dint, 55.5)
 vrb("array", arr, [13, "im the second part of the array", 68.4])
 
-vrb("object", obj, "object noises"; 15; 7863.98; "51") ---NOTE: numbers in quotes are stilled considered standard text---
-vrb("image", med, dsp(lcl, "C:\Documents\smiley_face.png"))
-
+vrb("object", obj, {"property_list"{"property1": "value1", "property2": "value2", "property3": "value3"}, "property_list2"{"special_property"{"wow": "look at me"}, "property4": "value4"}}) --- While theoretically object properties can be nested forever, i do not reccomend ---
+vrb("image", med, dsp(lcl, "C:\Users\Documents\smiley_face.png"))
 
 
 wrt(#text) --- every comment from this point in this block will be the output: Hi!Im a text! ---
@@ -75,10 +71,9 @@ wrt(#array[2]) --- 68.4 ---
 wrt(#array) --- 13 (new line) im the second part of the array (new line) 68.4 ---
 wrt(#object) --- {15, 7863.98, 51} ---
 
-wrt(#object{1}) --- {15} ---
-wrt(#object{2}) --- {7863.98} ---
+wrt(#object{property_list{property1}}) --- value1 ---
+wrt(#object{property_list2{}}) --- special_property---
 
-wrt(#object{3}) --- {51} ---
 wrt(#image) --- pretend the smiley_face.png image is here ---
 ```
 ---
