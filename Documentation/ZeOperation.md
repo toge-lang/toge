@@ -47,7 +47,7 @@ Come on, NOW get hasty, speedrun!!
 < smaller tham
 >= greater/equal
 <= smaller/equal
-!(compare operator) opposite of operatot
+!(compare operator) opposite of operator
 +++ AND
 -+- NOT
 /+/ OR
