@@ -31,7 +31,7 @@ for(#a; #a > 10; {wait(s, 1); #a = #a + 1})
 # Ze Opera(tion)
 
 Now dont get too hasty, theres still the operators!!
-Come on, speedrun!!
+Come on, NOW get hasty, speedrun!!
 ```
 + plus
 - minus
