@@ -51,7 +51,7 @@ Come on, NOW get hasty, speedrun!!
 +++ AND
 -+- NOT
 /+/ OR
-/-/ XOR
+/-/ XOR --- Rather simple: if one or the other are true, it is true. If more than 2 or all of them are true, it is false. ---
 ```
 ---
 
