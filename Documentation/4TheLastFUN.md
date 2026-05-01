@@ -59,7 +59,7 @@ srch("banana", txt, miss) --- #fruits, [0]; #fruits, [3]; #fruits2, [0]; ---
 ```
 
 * ``sort(#vrb, A/AA/I/R)`` --> Sorts a certain array(`#vrb` in this case), and a sorting method. `A` is alphabetically, where it starts with smallest to biggest integers and dintegers, then txt, from a, to z, to A, to Z. `I` is for Invert, where it just inverts the order of the values, `AA` is the same as Alphabetically, but numbers are after the letters, meaning txt values come first. Finally, `R` just sorts randomdly.
-* 
+---
 # Also More About Text
 And finally, the last fun we'll have better we part ways :(
 Its simple and short, so i'll explain it in the following codeblock.
@@ -69,3 +69,4 @@ wrt("Hello " + "Spaghetti!" + " :D") --- Hello Spaghetti! :D ---
 vrb("txt", txt, "Spaghetti... ")
 wrt("Bye, #txt :( ") --- Bye, Spaghetti... :( ---
 ```
+---
