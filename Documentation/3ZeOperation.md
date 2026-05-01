@@ -24,8 +24,8 @@ Am i the only person who always hated "For" for some reason? It just makes no se
 Until is just a NOT version of while.
 
 ```
-until(#a + #b =? 5) [wait(s, 2); wrt(LOOK! ITS REAL!!! THE 2 + 3 = 6 IS REAL!!!)]
-for(#a; #a > 10; {wait(s, 1); #a = #a + 1})
+until(#a + #b ? 5) [wait(s, 2); wrt("LOOK! ITS REAL!!! THE 2 + 3 = 6 IS REAL!!!")]
+for(#a; #a > 10; [wait(s, 1); #a = #a + 1])
 ```
 ---
 # Ze Opera(tion)
