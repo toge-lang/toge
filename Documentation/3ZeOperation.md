@@ -42,6 +42,12 @@ Come on, NOW get hasty, speedrun!!
 ?? conditional strict equals(same type only)
 = equals
 == strict equals(same type only)
++= equals, but add with the original value                                  }
+-= equals, but subtract from the original value                             }
+*= equals, but multiply the original value with it                          } ONLY WORKS WITH INTEGERS 
+/= equals, but divide the original value with it (result)                   } AND INTEGERS WITH DECIMALS
+%= equals, but divide the original value with it (remainder)                }
+^= equals, but give the original value with the power of the given number   }
 ^ to the power of
 > greater than
 < smaller tham
