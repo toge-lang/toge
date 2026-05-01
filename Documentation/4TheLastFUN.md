@@ -69,7 +69,7 @@ wrt("Hello " + "Spaghetti!" + " :D") --- Hello Spaghetti! :D ---
 vrb("txt", txt, "Spaghetti... ")
 wrt("Bye, #txt :( ") --- Bye, Spaghetti... :( ---
 lngth(#txt) --- 13. Self explanatory. ---
-steal(#txt, 0, 8) --- Spaghetti. 1, 8 is the area of letters it will `steal` from the text string/variable. From the first, to the 8th character.
+steal(#txt, 0, 8) --- Spaghetti. 0, 8 is the area of letters it will `steal` from the text string/variable. From the first, to the 8th character.
 occur(#txt, ".") --- 3. Shows how many times a text string appears in a text string/variable ---
 occur(#txt, "Spaghetti...") --- 1. You can also just do that. ---
 trim(#txt, "t", o) --- Spagheti... . Trims a text string from text string/variable. o stands for once ---
