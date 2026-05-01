@@ -11,7 +11,7 @@ wrt("Hello World!");
 ---"Hello World!", wrt is write---
 vrb("FOOD", txt, ret(tlk(l, "What's your favorite food?")))
 ---'Whats your favorite food?' ...(user input). tlk is talk. Normally only code variables(later on) can use ret(), but strictly ret(tlk(l, "")) is allowed for txt variables. ---
-if(FOOD ? "Banana") [wrt("Mine too!")]
+if(#FOOD ? "Banana") [wrt("Mine too!")]
 else [wrt("What's that?")]
 --- If the response was Banana, then it says "Mine too!", without quotes, if not, says "What's that?" without quotes. ---
 ```
