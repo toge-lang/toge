@@ -79,6 +79,7 @@ wrt(#object{property_list2}) --- special_property ---
 
 wrt(#state) --- true. Fun fact: you can use a !() in a wrt() function with the state variable put inside the !(), and it'll return the opposite of it. ---
 wrt(!(#state)) --- false ---
+
 wrt(#image) --- pretend the smiley_face.png image is here ---
 ```
 ---
