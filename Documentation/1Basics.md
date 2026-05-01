@@ -14,11 +14,12 @@ Currently, there are 5 default, basic functions. Not all functions are covered h
 * ``tlk(l/n, "" opt)`` --> The ask/input function for Toge. L is for inputs requiring letters/characters, and N for number inputs.
 * ``ret(any)`` --> Instead of return being a keyword, in Toge, `return` is a function. It still has the same use, the value just goes in the brackets.
 * ``wait(m opt, n)`` --> The wait function for Toge. In Toge, you can specify a measuring unit for the wait, although optional, either `ms`(milisecond), `s`(second), `m`(minute), or `h`(hour).
-* ``vrb("", type, value opt)`` --> instead of being just a simple variable pronounce like ``let a = b``, it uses a function, with the text in "" being the variable name, and the type MUST be set to `int` for numbers, `dint`(decimal integer) for numbers with decimals, `txt` for a text, `stt`(state) for true/false, `arr` for an array, `obj` for an object(variable with multiple values), and `med`(media) for images or audio(requiring the `IMG`, and respectively the `AUD` box for each), or `code`, but thats for later. In most cases, the value is optional, but for media, it is *mandatory* to be a placeholder image/audio file, and the value must be either a `dps()` or an `aud()` function. In cases of the object type, there can be *multiple* values, each split by eachother with a ";".
+* ``vrb("", type, value opt)`` --> instead of being just a simple variable pronounce like ``let a = b``, it uses a function, with the text in "" being the variable name, and the type MUST be set to `int` for numbers, `dint`(decimal integer) for numbers with decimals, `txt` for a text, `stt`(state) for true/false, `arr` for an array, `obj` for an object(variable with multiple values), and `med`(media) for images or audio(requiring the `IMG`, and respectively the `AUD` box for each), or `code`, but thats for later. In most cases, the value is optional, but for media, it is *mandatory* to be a placeholder image/audio file, and the value must be either a `dps()` or an `aud()` function. In cases of the object type, there can be *multiple* values, each split by eachother with a ";". Further reference of variables can be done via just adding a # before it, e.g. `#name`.
+* ``type(#vrb)`` --> Gets the type of a variable, #vrb being just an example for a variable. There's not much to say here, it just returns most of the names in `these fancy code quotes` from the `vrb()` description.
 ---
 ### Boxes
 Boxes are the packages of Toge. Its just a different name. Currently there are 3 boxes in Toge, each one being accesed with different values inside the `box()` function.
-* ``box("TM")`` --> imports the ``Ctm(AM/PM opt)`` function, getting the current time in the device's timezone. Default displays military time, but can be specified for AM/PM("AM/PM" needs to be introduced, not just "AM" or "PM")
+* ``box("TM")`` --> imports the ``ctm(AM/PM opt)`` function, getting the current time in the device's timezone. Default displays military time, but can be specified for AM/PM("AM/PM" needs to be introduced, not just "AM" or "PM")
 * ``box("IMG")`` --> imports the ``dsp(url/lcl/srv, filepath, yXz px opt)`` function, which displays an image, either from an url, a local file, or a "server" file, a file found in the same folder/accesible database as the code file. the filepath is either the url or the file name and filepath. you can specify the width pixels by the y value, and the height by the z value. the X is mandatory, alongside "px". Only .png, .jpg, or .jpeg are allowed file types.(only "url", "lcl", or "srv" may be specified, not more at once)
 * ``box("AUD")`` --> imports the ``aud(url/lcl/srv, filepath, N db opt, n% spd opt)`` function, which plays an audio file, with the filepath thing being the same thing as ``dsp()``, and db and spd each respectively control the volume and the speed of it. Only .mp3 and .mid are allowed file types.
 Unlike other languages, the `box()` function can be put anywhere in the code, even in the middle, but it throws an error if you use any of the imported functions before the needed value put inside a `box()`, e.g. using `dsp()` before using `box("IMG")`.
@@ -50,6 +51,7 @@ Heres a program that declares and uses all variable types:
 
 ```
 ---long one here, bare with me ---
+vrb("state", stt, true)
 vrb("text", txt, "Hi!Im a text!")
 vrb("integer", int, 55)
 
@@ -75,6 +77,8 @@ wrt(#object) --- im not typing allat ---
 wrt(#object{property_list{property1}}) --- value1 ---
 wrt(#object{property_list2}) --- special_property ---
 
+wrt(#state) --- true. Fun fact: you can use a !() in a wrt() function with the state variable put inside the !(), and it'll return the opposite of it. ---
+wrt(!(#state)) --- false ---
 wrt(#image) --- pretend the smiley_face.png image is here ---
 ```
 ---
