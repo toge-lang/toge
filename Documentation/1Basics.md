@@ -20,7 +20,7 @@ Currently, there are 5 default, basic functions. Not all functions are covered h
 Boxes are the packages of Toge. Its just a different name. Currently there are 3 boxes in Toge, each one being accesed with different values inside the `box()` function.
 * ``box("TM")`` --> imports the ``Ctm(AM/PM opt)`` function, getting the current time in the device's timezone. Default displays military time, but can be specified for AM/PM("AM/PM" needs to be introduced, not just "AM" or "PM")
 * ``box("IMG")`` --> imports the ``dsp(url/lcl/srv, filepath, yXz px opt)`` function, which displays an image, either from an url, a local file, or a "server" file, a file found in the same folder/accesible database as the code file. the filepath is either the url or the file name and filepath. you can specify the width pixels by the y value, and the height by the z value. the X is mandatory, alongside "px". Only .png, .jpg, or .jpeg are allowed file types.(only "url", "lcl", or "srv" may be specified, not more at once)
-* ``box("AUD")`` --> imports the ``aud(url/lcl/srv, filepath, N db opt, n% spd opt)`` function, which plays an audio file, with the filepath thing being the same thing as ``dsp()``, and db, spd, and rvrb, each respectively control the volume, the speed, and the reverb(sound echo) of it. Only .mp3 and .mid are allowed file types.
+* ``box("AUD")`` --> imports the ``aud(url/lcl/srv, filepath, N db opt, n% spd opt)`` function, which plays an audio file, with the filepath thing being the same thing as ``dsp()``, and db and spd each respectively control the volume and the speed of it. Only .mp3 and .mid are allowed file types.
 Unlike other languages, the `box()` function can be put anywhere in the code, even in the middle, but it throws an error if you use any of the imported functions before the needed value put inside a `box()`, e.g. using `dsp()` before using `box("IMG")`.
 ---
 ## Variables
@@ -56,7 +56,7 @@ vrb("integer", int, 55)
 vrb("decimal_integer", dint, 55.5)
 vrb("array", arr, [13, "im the second part of the array", 68.4])
 
-vrb("object", obj, {"property_list"{"property1": "value1", "property2": "value2", "property3": "value3"}, "property_list2"{"special_property"{"wow": "look at me"}, "property4": "value4"}}) --- While theoretically object properties can be nested forever, i do not reccomend ---
+vrb("object", obj, {"property_list"{"property1": "value1", "property2": "value2", "property3": "value3"}, "property_list2"{"special_property"{"wow": "look at me"}}}) --- While theoretically object properties can be nested forever, i do not reccomend ---
 vrb("image", med, dsp(lcl, "C:\Users\Documents\smiley_face.png"))
 
 
@@ -70,10 +70,10 @@ wrt(#array[1]) --- im the second part of the array ---
 wrt(#array[2]) --- 68.4 ---
 
 wrt(#array) --- 13 (new line) im the second part of the array (new line) 68.4 ---
-wrt(#object) --- {15, 7863.98, 51} ---
+wrt(#object) --- im not typing allat ---
 
 wrt(#object{property_list{property1}}) --- value1 ---
-wrt(#object{property_list2{}}) --- special_property---
+wrt(#object{property_list2}) --- special_property ---
 
 wrt(#image) --- pretend the smiley_face.png image is here ---
 ```
