@@ -47,7 +47,7 @@ vrb("code", code, ret(blk[
         $p1 = $p1 * 9 / 5 + $p2
         --- Yes, parameters CAN be reassigned with different values ---
         wrt($p1)
-    
+    ] 
 ]))
 newf("toFahrenheit", #code, {p1: dint, p2: int})
 ```
