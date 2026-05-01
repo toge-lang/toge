@@ -45,6 +45,7 @@ vrb("code", code, ret(blk[
     optblk[
         opt($p2)
         $p1 = $p1 * 9 / 5 + $p2
+        --- Yes, parameters CAN be reassigned with different values ---
         wrt($p1)
     
 ]))
