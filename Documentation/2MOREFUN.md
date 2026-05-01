@@ -22,11 +22,37 @@ anyways, lets get back to where we left from:
 ```
 -d we're all set... or are we? ---
 --- while its simple for stuff like we just did with wrt2(), what if we want, idk, to make a function with multiple values and a change each time? like an add() function? dont worry i gotchu fam ---
-vrb("value1", int)
-vrb("value2", int)
-vrb("code", code, ret($p1+$p2))
-newf("add", #code, {p1: #value1, p2: #value2}) --- p stands for parameter ---
+vrb("code", code, ret($p1+$p2)) --- if we want to refer to parameters of a function that hasnt been declared yet, we add $ at the start ---
+newf("add", #code, {p1: int, p2: int}) --- p stands for parameter ---
 add(3, 2) --- it works now trust me bro. anyways, the result is CLEARLY 6 ---
 ```
 That was a hard one.
 I think i MIGHT be losing my mind more and more with each new file.
+Now, a code variable with multiple lines:
+```
+vrb("code", code, ret(blk[ --- blk[] is for the pure purpose of having multiline code variables, short for 'block' ---
+    $p1 = $p1 * 9 / 5 + 32)
+    wrt($p1)
+]))
+newf("ToFahrenheit", #code, {p1: dint})
+```
+---
+Now, i hear you. "What if we want optional parameters??". I'll now show you.
+```
+vrb("code", code, ret(blk[
+    $p1 = $p1 * 9 / 5 + 32
+    wrt($p1)
+    optblk[
+        opt($p2)
+        $p1 = $p1 * 9 / 5 + $p2
+        wrt($p1)
+    
+]))
+newf("toFahrenheit", #code, {p1: dint, p2: int})
+```
+Toge is fortunately very readable, so just staring at this for 1 minute MAX you can understand the logic.
+`opt()` is a function that only allows parameters, such as `$p1`. It can only be put inside optional blocks, only once, and the parameter put inside it, is the optional parameter for that optional block.
+Outside of function declaration, you can, no, you **MUST** reference parameters with a cha-ching(`$`) behind the p1 or p2 or... you get it.
+And to clear any confusion, here are some additional details:
+    1. Parameters are named after order. the first would be p1, the second p2... you cant name them LittleTwinkleStar1, sadly. Their name is automatic.
+    2. In the case of the use of a user-made function, if you do not provide optional parameters, then, suprise, optional blocks(`optblk[]`) for that parameter will be skipped.
