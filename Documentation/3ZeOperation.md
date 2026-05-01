@@ -12,7 +12,7 @@ anyways lets get to the point.
 ```
 vrb("a", int, 3)
 vrb("b", int, 2)
-if(#a + #b =? 6) [wrt("Look!I KNEW 2 + 3 IS 6!!!")]
+if(#a + #b ? 6) [wrt("Look!I KNEW 2 + 3 IS 6!!!")]
 bif(#a < #b) [wrt("LOOK! MAYBE 3 + 2 IS NOT 6 BUT 3 IS DEFINETELY SMALLER THAN 2!!! TRUST ME")]
 else [wrt("math actually sucks")]
 ```
@@ -38,8 +38,8 @@ Come on, NOW get hasty, speedrun!!
 * times
 / divided by(result)
 % divided by(remainder)
-=? conditional equals
-=?? conditional strict equals(same type only)
+? conditional equals
+?? conditional strict equals(same type only)
 = equals
 == strict equals(same type only)
 ^ to the power of
@@ -50,8 +50,8 @@ Come on, NOW get hasty, speedrun!!
 !(compare operator) opposite of operator
 +++ AND
 -+- NOT
-/+/ OR
-/-/ XOR --- Rather simple: if one or the other are true, it is true. If more than 2 or all of them are true, it is false. ---
+|+| OR
+|-| XOR --- Rather simple: if one or the other are true, it is true. If more than 2 or all of them are true, it is false. ---
 ```
 ---
 
