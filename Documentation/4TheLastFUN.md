@@ -1,13 +1,16 @@
 # Arrays: The Movie
 
 P.S. but at the start: "Items" are the values inside arrays.
+
 So, as we all know, in most languages that offer array or list variables, we have a few functions to work around with them other than I/O. 
 They are either the deletion of an item in the array, adding an item, searching for an item, or the sorting of items.
 So, i said, "Why not have them in Toge too?".
+
 I present to you, the ARRAY fun:
 * ``del(#vrb, [int] opt)`` ---> Deletes an item from the array, while `#vrb` is the array variable and `[int]` is the item of the array thats getting deleted, with the `[int]` being the number slot of the array it is in(starting from zero). Funny enough, this can be used to just delete variables if you dont mention the `[int]` part, but if you do, it throws an error into your face.
 * ``incl(#vrb, value, type, [int] opt)`` ---> Includes a new value into an array(`#vrb`), with `value`, being, well..., `type` being the type of it, since Toge is a strictly-typed language afterall, and `[int]` being the slot of it. If the slot isnt mentioned, it will add it to the end of the list, and if it is mentioned, it is put into the slot and pushes every value in the array by 1 slot. This time the variable MUST be an array.
-* ``srch(#vrb opt, value opt, type opt, [int] opt, all/miss)``---> Bare with me here. This fine dine is the search function for arrays. It 'searches' through a specified array (or all declared arrays if no variable is specified) and returns data based on `all` or `miss`. `all` returns, well.., all details of every matching item including specified parameters, while `miss` returns only the unspecified parameters of each matching item. At least one of the parameters besides `miss/all` must be specified alongside `all/miss`, or else another error will hit your face like your a clown getting hit by pies. Multiple matching items are separated by `;`, and within each match, values are separated by `, `. 
+* ``srch(#vrb opt, value opt, type opt, [int] opt, all/miss)``---> Bare with me here. This fine dine is the search function for arrays. It 'searches' through a specified array (or all declared arrays if no variable is specified) and returns data based on `all` or `miss`. `all` returns, well.., all details of every matching item including specified parameters, while `miss` returns only the unspecified parameters of each matching item. At least one of the parameters besides `miss/all` must be specified alongside `all/miss`, or else another error will hit your face like your a clown getting hit by pies. Multiple matching items are separated by `;`, and within each match, values are separated by `, `.
+
 There is so much yap. Just promise me you'll bare with me here.
 ```
 vrb("fruits", arr, ["banana", "apple", 3, "banana", 4.5, "grape"])
@@ -54,7 +57,9 @@ srch(txt, miss) --- #fruits, "banana", [0]; #fruits, "apple", [1]; #fruits, "ban
 srch("banana", txt, all) --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3]; #fruits2, "banana", txt, [0] ---
 srch("banana", txt, miss) --- #fruits, [0]; #fruits, [3]; #fruits2, [0]; ---
 ```
+
 * ``sort(#vrb, A/AA/I/R)`` --> Sorts a certain array(`#vrb` in this case), and a sorting method. `A` is alphabetically, where it starts with smallest to biggest integers and dintegers, then txt, from a, to z, to A, to Z. `I` is for Invert, where it just inverts the order of the values, `AA` is the same as Alphabetically, but numbers are after the letters, meaning txt values come first. Finally, `R` just sorts randomdly.
+* 
 # Also More About Text
 And finally, the last fun we'll have better we part ways :(
 Its simple and short, so i'll explain it in the following codeblock.
