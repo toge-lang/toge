@@ -31,7 +31,7 @@ I think i MIGHT be losing my mind more and more with each new file.
 Now, a code variable with multiple lines:
 ```
 vrb("code", code, ret(blk[ --- blk[] is for the pure purpose of having multiline code variables, short for 'block' ---
-    $p1 = $p1 * 9 / 5 + 32)
+    $p1 = $p1 * 9 / 5 + 32
     wrt($p1)
 ]))
 newf("ToFahrenheit", #code, {p1: dint})
