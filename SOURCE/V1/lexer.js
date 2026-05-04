@@ -40,16 +40,37 @@ function tokenize() {
         continue;
       }
       else if(source[pos+1] === '=') {tokens.push({type: "MINUS_EQ", value: '-='})};
+      else if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "NOT_GATE", value: '-+-'})};
       else {tokens.push({type: "MINUS", value: '-'})};
     }
     else if(char === '+') {
       if(source[pos+1] === '=') {tokens.push({type: "PLUS_EQ", value: '+='})};
+      else if(source[pos+1] === char && source[pos+2] === char) {tokens.push({type: "AND_GATE", value: '+++'})};
       else {tokens.push({type: "PLUS", value: '+'})};
     }
     else if(char === '*') {
       if(source[pos+1] === '=') {tokens.push({type: "TIMES_EQ", value: '*='})};
       else {tokens.push({type: "TIMES", value: '*'})};
+    }
+    else if(char === '/') {
+      if(source[pos+1] === '=' {tokens.push({type: "DIVIDERS_EQ", value: '/='})};
+      else {tokens.push({type: "DIVIDE_RS", value: "/"})};
+    }
+    else if(char === '%') {
+      if(source[pos+1] === '=' {tokens.push({type: "DIVIDERM_EQ", value: '%='})};
+      else {tokens.push({type: "DIVIDE_RM", value: "%"})};
+    }
+    else if(char === '^') {
+      if(source[pos+1] === '=' {tokens.push({type: "POWER_EQ", value: '^='})};
+      else {tokens.push({type: "POWER", value: "^"})};
+    }
+    else if(char === '|') {
+      if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "OR_GATE", value: "|+|"})};
+      else if(source[pos+1] === '-' && source[pos+2] === char) {tokens.push({type: "XOR_GATE", value: '|-|'})};
+    }
   }
+  tokens.push({type: "EOF", value: null})};
 }
+
      
   
