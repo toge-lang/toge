@@ -5,30 +5,34 @@ function tokenize() {
   while(pos < source.length) {
     const char = source[pos];
     if(char === '(') {tokens.push({type: "LPAREN", value: '('})};                                   
-    else if(char === ')') {tokens.push({type: "RPAREN", value: ')'})};                             
-    else if(char === '[') {tokens.push({type: "LBRACK", value: '['})};                            
-    else if(char === ']') {tokens.push({type: "RBRACK", value: ']'})};
-    else if(char === '{') {tokens.push({type: "LBRACE", value: '{'})};                        
-    else if(char === '}') {tokens.push({type: "RBRACE", value: '}'})};                       
-    else if(char === ',') {tokens.push({type: "COMMA", value: ','})};                                                
+    else if(char === ')') {tokens.push({type: "RPAREN", value: ')'}); pos++};                             
+    else if(char === '[') {tokens.push({type: "LBRACK", value: '['}); pos++};                            
+    else if(char === ']') {tokens.push({type: "RBRACK", value: ']'}); pos++};
+    else if(char === '{') {tokens.push({type: "LBRACE", value: '{'}); pos++};                        
+    else if(char === '}') {tokens.push({type: "RBRACE", value: '}'}); pos++};                       
+    else if(char === ',') {tokens.push({type: "COMMA", value: ','}); pos++};                                                
     else if(char === ' ') {pos++; continue};                                                 
     else if(char >= '0' && char <= '9') {                                                  
       let number = ``;
       while(source[pos] >= '0' && source[pos] <= '9') {number += source[pos]; pos++};     
-      tokens.push({type: "NUMBER", value: number});                                      
+      tokens.push({type: "NUMBER", value: number});
+      pos++;
     }                                                                                  
     else if(char === `"` || char === `'`) {                                          
       let string = ``;                                                                
       while(source[pos] !== char) {string += source[pos]; pos++};                   
-      tokens.push({type: "TEXT", value: string});                                   
+      tokens.push({type: "TEXT", value: string});      
+      pos++;
     }                                                                              
     else if(char === '=') {
       if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "STRICT_EQ", value: '=='})};
       else if(source[pos+1] !== char && source[pos+2] !== char) {tokens.push({type: "EQ", value: '='})};
+      pos++;
     }
     else if(char === '?') {
       if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "COND_EQ", value: '?'})};
       else if(source[pos+1] !== char && source[pos+2] !== char) {tokens.push({type: "COND_STRICT_EQ", value: '??'})};
+      pos++;
     }
     else if(char === '-') {
       if(source[pos+1] === char && source[pos+2] === char) {
