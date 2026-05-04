@@ -1,29 +1,27 @@
-//it all starts somewhere
-let source = `vrb("name", txt, "Alice")`; // the source. Currently an example
-let tokens = []; // the token list
-let pos = 0; // the 'cursor', moves by 1 repeatedly, to the next iteration in the source. Does not work alome, only as source[pos]
-//THE TOKENS
+let source = `vrb("name", txt, "Alice")`;
+let tokens = [];
+let pos = 0;
 function tokenize() {
   while(pos < source.length) {
     const char = source[pos];
-    if(char === '(') {tokens.push({type: "LPAREN", value: '('})};                                   //---
-    else if(char === ')') {tokens.push({type: "RPAREN", value: ')'})};                             //
-    else if(char === '[') {tokens.push({type: "LBRACK", value: '['})};                            //
-    else if(char === ']') {tokens.push({type: "RBRACK", value: ']'})};                           // punctuation
-    else if(char === '{') {tokens.push({type: "LBRACE", value: '{'})};                          //
-    else if(char === '}') {tokens.push({type: "RBRACE", value: '}'})};                         //
-    else if(char === ',') {tokens.push({type: "COMMA", value: ','})};                         //---                          
-    else if(char === ' ') {pos++; continue};                                                 // whitespace   
-    else if(char >= '0' && char <= '9') {                                                   //---
+    if(char === '(') {tokens.push({type: "LPAREN", value: '('})};                                   
+    else if(char === ')') {tokens.push({type: "RPAREN", value: ')'})};                             
+    else if(char === '[') {tokens.push({type: "LBRACK", value: '['})};                            
+    else if(char === ']') {tokens.push({type: "RBRACK", value: ']'})};
+    else if(char === '{') {tokens.push({type: "LBRACE", value: '{'})};                        
+    else if(char === '}') {tokens.push({type: "RBRACE", value: '}'})};                       
+    else if(char === ',') {tokens.push({type: "COMMA", value: ','})};                                                
+    else if(char === ' ') {pos++; continue};                                                 
+    else if(char >= '0' && char <= '9') {                                                  
       let number = ``;
-      while(source[pos] >= '0' && source[pos] <= '9') {number += source[pos]; pos++};     // numbers
-      tokens.push({type: "NUMBER", value: number});                                      //
-    }                                                                                   //---
-    else if(char === `"` || char === `'`) {                                            //---
-      let string = ``;                                                                //
-      while(source[pos] !== char) {string += source[pos]; pos++};                    // text/strings
-      tokens.push({type: "TEXT", value: string});                                   //
-    }                                                                              // ---
+      while(source[pos] >= '0' && source[pos] <= '9') {number += source[pos]; pos++};     
+      tokens.push({type: "NUMBER", value: number});                                      
+    }                                                                                  
+    else if(char === `"` || char === `'`) {                                          
+      let string = ``;                                                                
+      while(source[pos] !== char) {string += source[pos]; pos++};                   
+      tokens.push({type: "TEXT", value: string});                                   
+    }                                                                              
     else if(char === '=') {
       if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "STRICT_EQ", value: '=='})};
       else if(source[pos+1] !== char && source[pos+2] !== char) {tokens.push({type: "EQ", value: '='})};
@@ -49,24 +47,34 @@ function tokenize() {
       else {tokens.push({type: "PLUS", value: '+'})};
     }
     else if(char === '*') {
-      if(source[pos+1] === '=') {tokens.push({type: "TIMES_EQ", value: '*='})};
+      if(source[pos+1] === '=') {tokens.push({type: "TIMES_EQ", value: '*='});
       else {tokens.push({type: "TIMES", value: '*'})};
     }
     else if(char === '/') {
-      if(source[pos+1] === '=' {tokens.push({type: "DIVIDERS_EQ", value: '/='})};
+      if(source[pos+1] === '=' {tokens.push({type: "DIVIDERS_EQ", value: '/='});
       else {tokens.push({type: "DIVIDE_RS", value: "/"})};
     }
     else if(char === '%') {
-      if(source[pos+1] === '=' {tokens.push({type: "DIVIDERM_EQ", value: '%='})};
+      if(source[pos+1] === '=' {tokens.push({type: "DIVIDERM_EQ", value: '%='});
       else {tokens.push({type: "DIVIDE_RM", value: "%"})};
     }
     else if(char === '^') {
-      if(source[pos+1] === '=' {tokens.push({type: "POWER_EQ", value: '^='})};
+      if(source[pos+1] === '=' {tokens.push({type: "POWER_EQ", value: '^='});
       else {tokens.push({type: "POWER", value: "^"})};
     }
     else if(char === '|') {
-      if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "OR_GATE", value: "|+|"})};
+      if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "OR_GATE", value: "|+|"});
       else if(source[pos+1] === '-' && source[pos+2] === char) {tokens.push({type: "XOR_GATE", value: '|-|'})};
+    }
+    else if(char === '#') {
+      let vrb = ``;
+      while(source[pos] !== ' ') {vrb += source[pos]; pos++};
+      tokens.push({type: "VARIABLE", value: vrb});
+    }
+    else if(char === '$') {
+      let param = ``;
+      while(source[pos] !== ' ') {param += source[pos]; pos++};
+      tokens.push({type: "PARAMETER", value: param});
     }
   }
   tokens.push({type: "EOF", value: null})};
