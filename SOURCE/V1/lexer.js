@@ -3,8 +3,8 @@ let source = `vrb("name", txt, "Alice")`; // the source. Currently an example
 let tokens = []; // the token list
 let pos = 0; // the 'cursor', moves by 1 repeatedly, to the next digit. Does not work alone, only as source[pos]
 let number = ' ' // for tokenizing numbers
-let string1 = ` ` // for tokenizing  strings with double quotes
-let string2 = ` ` // for tokenizing strings with single quotes
+let string1 = ` ` // for tokenizing  strings with double quotes  }  i know theres a better way for this but
+let string2 = ` ` // for tokenizing strings with single quotes   }     'if it works, dont touch it'
 //THE TOKENS
 while(pos < source.length) {
   const char = source[pos];
