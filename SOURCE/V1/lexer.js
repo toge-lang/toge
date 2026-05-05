@@ -1,9 +1,9 @@
 let source = `vrb("name", txt, "Alice")`;
 let tokens = [];
 let pos = 0;
-function isDigit(source[pos]) {return char >= '0' && char <= '9'};
-function isLetter(source[pos]) {return char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z'};
-function isAlphanumeric(source[pos]) {return isDigit(source[pos]) || isLetter(source[pos])};
+function isDigit(char) {return char >= '0' && char <= '9'};
+function isLetter(char) {return char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z'};
+function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
 function tokenize() {
   while(pos < source.length) {
     const char = source[pos];
@@ -19,13 +19,12 @@ function tokenize() {
       let number = ``;
       while(isDigit(source[pos])) {number += source[pos]; pos++};     
       tokens.push({type: "NUMBER", value: number});
-      pos++;
     }                                                                                  
     else if(char === `"` || char === `'`) {                                          
-      let string = ``;                                                                
-      while(isLetter(source[pos]) {string += source[pos]; pos++};                   
-      tokens.push({type: "TEXT", value: string});      
+      let string = ``;       
       pos++;
+      while(source[pos] !== char) {string += source[pos]; pos++};                   
+      tokens.push({type: "TEXT", value: string});      
     }                                                                              
     else if(char === '=') {
       if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "STRICT_EQ", value: '=='}); pos += 2};
@@ -68,19 +67,19 @@ function tokenize() {
       else {tokens.push({type: "POWER", value: "^"}); pos++};
     }
     else if(char === '|') {
-      if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "OR_GATE", value: "|+|"})};
-      else if(source[pos+1] === '-' && source[pos+2] === char) {tokens.push({type: "XOR_GATE", value: '|-|'})};
-      pos += 3;
+      if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "OR_GATE", value: "|+|"}); pos += 3};
+      else if(source[pos+1] === '-' && source[pos+2] === char) {tokens.push({type: "XOR_GATE", value: '|-|'}); pos += 3};
     }
     else if(char === '#') {
       let vrb = ``;
+      pos++;
       while(isAlphaNumeric(source[pos])) {vrb += source[pos]; pos++};
       tokens.push({type: "VARIABLE", value: vrb});
       pos++;
     }
     else if(char === '$') {
       let param = ``;
-      while(isAlphaNumeric(source[pos]) {param += source[pos]; pos++};
+      while(isAlphaNumeric(source[pos])) {param += source[pos]; pos++};
       tokens.push({type: "PARAMETER", value: param});
       pos++;
     }
