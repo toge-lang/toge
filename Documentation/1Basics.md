@@ -8,13 +8,16 @@ So lets begin with the FUN...
 ## Functions
 > [!NOTE]
 > any functions including opt after a part in the brackets, that means that part is optional to put. By "that part", it means starting from the last comma, or first bracket if there arent commas.
+
+> [!IMPORTANT]
+> Because i am not wanting to struggle with the parser(i have PTSD), each line thats *complete*(absolutely **no sequential statements** like bif or else) requires a semicolon.
 ---
 Currently, there are 7 default, basic functions. Not all functions are covered here.
-* ``wrt("")`` --> the print/output function for Toge. Can output an image if the value is a `med` type variable thats an image.
+* ``wrt("")`` --> the print/output function for Toge.
 * ``tlk(l/n, "" opt)`` --> The ask/input function for Toge. L is for inputs requiring letters/characters, and N for number inputs.
 * ``ret(any)`` --> Instead of return being a keyword, in Toge, `return` is a function. It still has the same use, the value just goes in the brackets.
 * ``wait(m opt, n)`` --> The wait function for Toge. In Toge, you can specify a measuring unit for the wait, although optional, either `ms`(milisecond), `s`(second), `m`(minute), or `h`(hour).
-* ``vrb("", type, value opt)`` --> instead of being just a simple variable pronounce like ``let a = b``, it uses a function, with the text in "" being the variable name, and the type MUST be set to `int` for numbers, `dint`(decimal integer) for numbers with decimals, `txt` for a text, `stt`(state) for true/false, `arr` for an array, `obj` for an object(variable with multiple values), and `med`(media) for images or audio(requiring the `IMG`, and respectively the `AUD` box for each), or `code`, but thats for later. In most cases, the value is optional, but for media, it is *mandatory* to be a placeholder image/audio file, and the value must be either a `dps()` or an `aud()` function. In cases of the object type, there can be *multiple* values, each split by eachother with a ";". Further reference of variables can be done via just adding a # before it, e.g. `#name`.
+* ``vrb("", type, value opt)`` --> instead of being just a simple variable pronounce like ``let a = b``, it uses a function, with the text in "" being the variable name, and the type MUST be set to `int` for numbers, `dint`(decimal integer) for numbers with decimals, `txt` for a text, `stt`(state) for true/false, `arr` for an array, `obj` for an object(variable with multiple values), and `med`(media) for images or audio(requiring the `IMG`, and respectively the `AUD` box for each), or `code`, but thats for later. In most cases, the value is optional, but for media, it is *mandatory* to be a placeholder image/audio file, and the value must be either a `dps()` or an `aud()` function, and this file type cannot be used until either the image box or the audio box is implemented. In cases of the object type, there can be *multiple* values, each split by eachother with a ";". Further reference of variables can be done via just adding a # before it, e.g. `#name`.
 * ``type(#vrb)`` --> Gets the type of a variable, #vrb being just an example for a variable. There's not much to say here, it just returns most of the names in `these fancy code quotes` from the `vrb()` description.
 * ``ext(int opt)`` --> Ends the program. REQUIRED for actually making programs and code files in toge, but i didnt add it in any examples because im lazy, but i want you to think its because all examples are part of some non-existing 6000 line guidebook codeblock that never ends, for dramatic effect. You can either put 0 or 1-infinity integer if you want, 0 for success, and 1 to infinity to throw the error code of that numner.
 ---
@@ -32,19 +35,19 @@ Unlike other languages, the `box()` function can be put anywhere in the code, ev
 Alright, so we already learned how to declare/pronounce variables, now, how do we use them?
 Its quite simple actually.
 ```
-#name = "Hello World!"
+#name = "Hello World!";
 ---variable names, even in functions(except declaration), are always are beginned with a # to both help readabillity AND parser problems---
 
-wrt(#name)
+wrt(#name);
 ---outputs: Hello World!---
 ```
 The question is: *how do we update them?*
 Its actually just like in other languages, with the good ol' equation... thingy.
 ```
-vrb("twoplus2", int, 5) --- Uh oh! Little timmy is bad at kindergarten math.. ---
-#twoplus2 = 4 --- since were his tutor, we correct them ---
-vrb("SchoolSign", txt, "Welcome students to Dips and Hits University!") --- hehe lets do a sick prank bro... ---
-#SchoolSign = "i am DipsHit!" --- LMAO ---
+vrb("twoplus2", int, 5); --- Uh oh! Little timmy is bad at kindergarten math.. ---
+#twoplus2 = 4; --- since were his tutor, we correct them ---
+vrb("SchoolSign", txt, "Welcome students to Dips and Hits University!"); --- hehe lets do a sick prank bro... ---
+#SchoolSign = "i am DipsHit!"; --- LMAO ---
 ```
 ---
 
@@ -52,35 +55,35 @@ Heres a program that declares and uses all variable types:
 
 ```
 ---long one here, bare with me ---
-vrb("state", stt, true)
-vrb("text", txt, "Hi!Im a text!")
-vrb("integer", int, 55)
+vrb("state", stt, true);
+vrb("text", txt, "Hi!Im a text!");
+vrb("integer", int, 55);
 
-vrb("decimal_integer", dint, 55.5)
-vrb("array", arr, [13, "im the second part of the array", 68.4])
+vrb("decimal_integer", dint, 55.5);
+vrb("array", arr, [13, "im the second part of the array", 68.4]);
 
-vrb("object", obj, {"property_list"{"property1": "value1", "property2": "value2", "property3": "value3"}, "property_list2"{"special_property"{"wow": "look at me"}}}) --- While theoretically object properties can be nested forever, i do not reccomend ---
-vrb("image", med, dsp(lcl, "C:\Users\Documents\smiley_face.png"))
+vrb("object", obj, {"property_list"{"property1": "value1", "property2": "value2", "property3": "value3"}, "property_list2"{"special_property"{"wow": "look at me"}}}); --- While theoretically object properties can be nested forever, i do not reccomend ---
+vrb("image", med, dsp(lcl, "C:\Users\Documents\smiley_face.png"));
 
 
-wrt(#text) --- every comment from this point in this block will be the output: Hi!Im a text! ---
-wrt(#integer) --- 55 ---
+wrt(#text); --- every comment from this point in this block will be the output: Hi!Im a text! ---
+wrt(#integer); --- 55 ---
 
-wrt(#decimal_integer) --- 55.5 ---
-wrt(#array[0]) --- 13 ---
+wrt(#decimal_integer); --- 55.5 ---
+wrt(#array[0]); --- 13 ---
 
-wrt(#array[1]) --- im the second part of the array ---
-wrt(#array[2]) --- 68.4 ---
+wrt(#array[1]); --- im the second part of the array ---
+wrt(#array[2]); --- 68.4 ---
 
-wrt(#array) --- 13 (new line) im the second part of the array (new line) 68.4 ---
-wrt(#object) --- im not typing allat ---
+wrt(#array); --- 13 (new line) im the second part of the array (new line) 68.4 ---
+wrt(#object); --- im not typing allat ---
 
-wrt(#object{property_list{property1}}) --- value1 ---
-wrt(#object{property_list2}) --- special_property ---
+wrt(#object{property_list{property1}}); --- value1 ---
+wrt(#object{property_list2}); --- special_property ---
 
-wrt(#state) --- true. Fun fact: you can use a !() in a wrt() function with the state variable put inside the !(), and it'll return the opposite of it. ---
-wrt(!(#state)) --- false ---
+wrt(#state); --- true. Fun fact: you can use a !() in a wrt() function with the state variable put inside the !(), and it'll return the opposite of it. ---
+wrt(!(#state)); --- false ---
 
-wrt(#image) --- pretend the smiley_face.png image is here ---
+dsp(#image); --- pretend the smiley_face.png image is here ---
 ```
 ---
