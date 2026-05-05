@@ -3,7 +3,7 @@ let tokens = [];
 let pos = 0;
 function isDigit(source[pos]) {return char >= '0' && char <= '9'};
 function isLetter(source[pos]) {return char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z'};
-function isAlphanumeric(source[pos]) {return isDigit(char) || isLetter(char)};
+function isAlphanumeric(source[pos]) {return isDigit(source[pos]) || isLetter(source[pos])};
 function tokenize() {
   while(pos < source.length) {
     const char = source[pos];
