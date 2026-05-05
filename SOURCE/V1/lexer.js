@@ -75,17 +75,23 @@ function tokenize() {
       pos++;
       while(isAlphaNumeric(source[pos])) {vrb += source[pos]; pos++};
       tokens.push({type: "VARIABLE", value: vrb});
-      pos++;
     }
     else if(char === '$') {
       let param = ``;
+      pos++;
       while(isAlphaNumeric(source[pos])) {param += source[pos]; pos++};
       tokens.push({type: "PARAMETER", value: param});
-      pos++;
+    }
+    else if(isLetter(char)) {
+      let identifier = ``;
+      while(isAlphaNumeric(source[pos])) {identifier += source[pos]; pos++};
+      tokens.push({type: "IDENTIFIER", value: identifier});
     }
   }
   tokens.push({type: "EOF", value: null})};
 }
+tokenize()
+console.log(tokens)
 
      
   
