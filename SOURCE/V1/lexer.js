@@ -7,14 +7,14 @@ function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
 function tokenize() {
   while(pos < source.length) {
     const char = source[pos];
-    if(char === '(') {tokens.push({type: "LPAREN", value: '('}); pos++};                                   
-    else if(char === ')') {tokens.push({type: "RPAREN", value: ')'}); pos++};                             
-    else if(char === '[') {tokens.push({type: "LBRACK", value: '['}); pos++};                            
-    else if(char === ']') {tokens.push({type: "RBRACK", value: ']'}); pos++};
-    else if(char === '{') {tokens.push({type: "LBRACE", value: '{'}); pos++};                        
-    else if(char === '}') {tokens.push({type: "RBRACE", value: '}'}); pos++};                       
-    else if(char === ',') {tokens.push({type: "COMMA", value: ','}); pos++};                                                
-    else if(char === ' ') {pos++; continue};                                                 
+    if(char === '(') {tokens.push({type: "LPAREN", value: '('}); pos++}                         
+    else if(char === ')') {tokens.push({type: "RPAREN", value: ')'}); pos++}                        
+    else if(char === '[') {tokens.push({type: "LBRACK", value: '['}); pos++}                       
+    else if(char === ']') {tokens.push({type: "RBRACK", value: ']'}); pos++}
+    else if(char === '{') {tokens.push({type: "LBRACE", value: '{'}); pos++}                   
+    else if(char === '}') {tokens.push({type: "RBRACE", value: '}'}); pos++}                  
+    else if(char === ',') {tokens.push({type: "COMMA", value: ','}); pos++}                                            
+    else if(char === ' ') {pos++; continue}                                   
     else if(char >= '0' && char <= '9') {                                                  
       let number = ``;
       while(isDigit(source[pos])) {number += source[pos]; pos++};     
@@ -27,11 +27,11 @@ function tokenize() {
       tokens.push({type: "TEXT", value: string});      
     }                                                                              
     else if(char === '=') {
-      if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "STRICT_EQ", value: '=='}); pos += 2};
+      if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "STRICT_EQ", value: '=='}); pos += 2}
       else if(source[pos+1] !== char && source[pos+2] !== char) {tokens.push({type: "EQ", value: '='}); pos++};
     }
     else if(char === '?') {
-      if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "COND_EQ", value: '?'}); pos++};
+      if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "COND_EQ", value: '?'}); pos++}
       else if(source[pos+1] !== char && source[pos+2] !== char) {tokens.push({type: "COND_STRICT_EQ", value: '??'}); pos += 2};
     }
     else if(char === '-') {
@@ -41,33 +41,33 @@ function tokenize() {
         pos += 3;
         continue;
       }
-      else if(source[pos+1] === '=') {tokens.push({type: "MINUS_EQ", value: '-='}); pos += 2};
-      else if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "NOT_GATE", value: '-+-'}); pos += 3};
+      else if(source[pos+1] === '=') {tokens.push({type: "MINUS_EQ", value: '-='}); pos += 2}
+      else if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "NOT_GATE", value: '-+-'}); pos += 3}
       else {tokens.push({type: "MINUS", value: '-'}); pos++};
     }
     else if(char === '+') {
-      if(source[pos+1] === '=') {tokens.push({type: "PLUS_EQ", value: '+='}); pos += 2};
-      else if(source[pos+1] === char && source[pos+2] === char) {tokens.push({type: "AND_GATE", value: '+++'}); pos += 3};
+      if(source[pos+1] === '=') {tokens.push({type: "PLUS_EQ", value: '+='}); pos += 2}
+      else if(source[pos+1] === char && source[pos+2] === char) {tokens.push({type: "AND_GATE", value: '+++'}); pos += 3}
       else {tokens.push({type: "PLUS", value: '+'}); pos++};
     }
     else if(char === '*') {
-      if(source[pos+1] === '=') {tokens.push({type: "TIMES_EQ", value: '*='}); pos += 2};
+      if(source[pos+1] === '=') {tokens.push({type: "TIMES_EQ", value: '*='}); pos += 2}
       else {tokens.push({type: "TIMES", value: '*'}); pos++};
     }
     else if(char === '/') {
-      if(source[pos+1] === '=') {tokens.push({type: "DIVIDERS_EQ", value: '/='}); pos += 2};
+      if(source[pos+1] === '=') {tokens.push({type: "DIVIDERS_EQ", value: '/='}); pos += 2}
       else {tokens.push({type: "DIVIDE_RS", value: "/"}); pos++};
     }
     else if(char === '%') {
-      if(source[pos+1] === '=') {tokens.push({type: "DIVIDERM_EQ", value: '%='}); pos += 2};
+      if(source[pos+1] === '=') {tokens.push({type: "DIVIDERM_EQ", value: '%='}); pos += 2}
       else {tokens.push({type: "DIVIDE_RM", value: "%"}); pos++};
     }
     else if(char === '^') {
-      if(source[pos+1] === '=') {tokens.push({type: "POWER_EQ", value: '^='}); pos += 2};
+      if(source[pos+1] === '=') {tokens.push({type: "POWER_EQ", value: '^='}); pos += 2}
       else {tokens.push({type: "POWER", value: "^"}); pos++};
     }
     else if(char === '|') {
-      if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "OR_GATE", value: "|+|"}); pos += 3};
+      if(source[pos+1] === '+' && source[pos+2] === char) {tokens.push({type: "OR_GATE", value: "|+|"}); pos += 3}
       else if(source[pos+1] === '-' && source[pos+2] === char) {tokens.push({type: "XOR_GATE", value: '|-|'}); pos += 3};
     }
     else if(char === '#') {
