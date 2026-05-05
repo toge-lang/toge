@@ -11,27 +11,27 @@ I present to you, the ARRAY fun:
 * ``incl(#vrb, value, type, [int] opt)`` ---> Includes a new value into an array(`#vrb`), with `value`, being, well..., `type` being the type of it, since Toge is a strictly-typed language afterall, and `[int]` being the slot of it. If the slot isnt mentioned, it will add it to the end of the list, and if it is mentioned, it is put into the slot and pushes every value in the array by 1 slot. This time the variable MUST be an array.
 * ``srch(#vrb opt, value opt, type opt, [int] opt, all/miss)``---> Bare with me here. This fine dine is the search function for arrays. It 'searches' through a specified array (or all declared arrays if no variable is specified) and returns data based on `all` or `miss`. `all` returns, well.., all details of every matching item including specified parameters, while `miss` returns only the unspecified parameters of each matching item. At least one of the parameters besides `miss/all` must be specified alongside `all/miss`, or else another error will hit your face like your a clown getting hit by pies. Multiple matching items are separated by `;`, and within each match, values are separated by `, `.
 
-There is so much yap. Just promise me you'll bare with me here.
+There is so much yap. Just promise me you'll bare with me here. I forgot to include some cases but you get the point.
 ```
-vrb("fruits", arr, ["banana", "apple", 3, "banana", 4.5, "grape"])
-vrb("fruits2", arr, ["banana", "mango", "strawberry"])
-vrb("veggies", arr, ["carrot", "broccoli", "spinach", "lettuce"])
+vrb("fruits", arr, ["banana", "apple", 3, "banana", 4.5, "grape"]);
+vrb("fruits2", arr, ["banana", "mango", "strawberry"]);
+vrb("veggies", arr, ["carrot", "broccoli", "spinach", "lettuce"]);
 
 --- single array, value search ---
-srch(#fruits, "banana", all) --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3] ---
-srch(#fruits, "banana", miss) --- txt, [0]; txt, [3] ---
+srch(#fruits, "banana", all); --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3] ---
+srch(#fruits, "banana", miss); --- txt, [0]; txt, [3] ---
 
 --- single array, type search ---
-srch(#fruits, txt, all) --- #fruits, "banana", txt, [0]; #fruits, "apple", txt, [1]; #fruits, "banana", txt, [3]; #fruits, "grape", txt, [5] ---
-srch(#fruits, txt, miss) --- "banana", [0]; "apple", [1]; "banana", [3]; "grape", [5] ---
+srch(#fruits, txt, all); --- #fruits, "banana", txt, [0]; #fruits, "apple", txt, [1]; #fruits, "banana", txt, [3]; #fruits, "grape", txt, [5] ---
+srch(#fruits, txt, miss); --- "banana", [0]; "apple", [1]; "banana", [3]; "grape", [5] ---
 
 --- single array, slot search ---
-srch(#veggies, [3], all) --- #veggies, "lettuce", txt, [3] ---
-srch(#veggies, [3], miss) --- "lettuce", txt ---
+srch(#veggies, [3], all); --- #veggies, "lettuce", txt, [3] ---
+srch(#veggies, [3], miss); --- "lettuce", txt ---
 
 --- single array, value + type search ---
-srch(#fruits, "banana", txt, all) --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3] ---
-srch(#fruits, "banana", txt, miss) --- [0]; [3] ---
+srch(#fruits, "banana", txt, all); --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3] ---
+srch(#fruits, "banana", txt, miss); --- [0]; [3] ---
 
 --- single array, value + slot search ---
 srch(#fruits, "banana", [0], all) --- #fruits, "banana", txt, [0] ---
