@@ -24,7 +24,8 @@ function tokenize() {
       let string = ``;       
       pos++;
       while(source[pos] !== char) {string += source[pos]; pos++};                   
-      tokens.push({type: "TEXT", value: string});      
+      tokens.push({type: "TEXT", value: string});
+      pos++;
     }                                                                              
     else if(char === '=') {
       if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "STRICT_EQ", value: '=='}); pos += 2}
