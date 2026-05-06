@@ -10,7 +10,7 @@ So lets begin with the FUN...
 > any functions including opt after a part in the brackets, that means that part is optional to put. By "that part", it means starting from the last comma, or first bracket if there arent commas.
 
 > [!IMPORTANT]
-> Because i am not wanting to struggle with the parser(i have PTSD), each line thats *complete*(absolutely **no sequential statements** like bif or else) requires a semicolon.
+> Because i am not wanting to struggle with the parser(i have PTSD), each line thats *complete*(absolutely **no sequential statements** like bif or else) requires a semicolon. Lines after the end of the [] block from all conditions except For dont require a semicolon.
 ---
 Currently, there are 7 default, basic functions. Not all functions are covered here.
 * ``wrt("")`` --> the print/output function for Toge.
