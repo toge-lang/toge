@@ -34,28 +34,28 @@ srch(#fruits, "banana", txt, all); --- #fruits, "banana", txt, [0]; #fruits, "ba
 srch(#fruits, "banana", txt, miss); --- [0]; [3] ---
 
 --- single array, value + slot search ---
-srch(#fruits, "banana", [0], all) --- #fruits, "banana", txt, [0] ---
-srch(#fruits, "banana", [0], miss) --- txt ---
+srch(#fruits, "banana", [0], all); --- #fruits, "banana", txt, [0] ---
+srch(#fruits, "banana", [0], miss); --- txt ---
 
 --- single array, type + slot search ---
-srch(#fruits, txt, [1], all) --- #fruits, "apple", txt, [1] ---
-srch(#fruits, txt, [1], miss) --- "apple" ---
+srch(#fruits, txt, [1], all); --- #fruits, "apple", txt, [1] ---
+srch(#fruits, txt, [1], miss); --- "apple" ---
 
 --- single array, everything specified ---
-srch(#fruits, "banana", txt, [0], all) --- #fruits, "banana", txt, [0] ---
-srch(#fruits, "banana", txt, [0], miss) --- nll ---
+srch(#fruits, "banana", txt, [0], all); --- #fruits, "banana", txt, [0] ---
+srch(#fruits, "banana", txt, [0], miss); --- nll ---
 
 --- no variable, value search ---
-srch("banana", all) --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3]; #fruits2, "banana", txt, [0] ---
-srch("banana", miss) --- #fruits, txt, [0]; #fruits, txt, [3]; #fruits2, txt, [0] ---
+srch("banana", all); --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3]; #fruits2, "banana", txt, [0] ---
+srch("banana", miss); --- #fruits, txt, [0]; #fruits, txt, [3]; #fruits2, txt, [0] ---
 
 --- no variable, type search ---
-srch(txt, all) --- #fruits, "banana", txt, [0]; #fruits, "apple", txt, [1]; #fruits, "banana", txt, [3]; #fruits, "grape", txt, [5]; #fruits2, "banana", txt, [0]; #fruits2, "mango", txt, [1]; #fruits2, "strawberry", txt, [2]; #veggies, "carrot", txt, [0]; #veggies, "broccoli", txt, [1]; #veggies, "spinach", txt, [2]; #veggies, "lettuce", txt, [3] ---
-srch(txt, miss) --- #fruits, "banana", [0]; #fruits, "apple", [1]; #fruits, "banana", [3]; #fruits, "grape", [5]; #fruits2, "banana", [0]; #fruits2, "mango", [1]; #fruits2, "strawberry", [2]; #veggies, "carrot", [0]; #veggies, "broccoli", [1]; #veggies, "spinach", [2]; #veggies, "lettuce", [3] ---
+srch(txt, all); --- #fruits, "banana", txt, [0]; #fruits, "apple", txt, [1]; #fruits, "banana", txt, [3]; #fruits, "grape", txt, [5]; #fruits2, "banana", txt, [0]; #fruits2, "mango", txt, [1]; #fruits2, "strawberry", txt, [2]; #veggies, "carrot", txt, [0]; #veggies, "broccoli", txt, [1]; #veggies, "spinach", txt, [2]; #veggies, "lettuce", txt, [3] ---
+srch(txt, miss); --- #fruits, "banana", [0]; #fruits, "apple", [1]; #fruits, "banana", [3]; #fruits, "grape", [5]; #fruits2, "banana", [0]; #fruits2, "mango", [1]; #fruits2, "strawberry", [2]; #veggies, "carrot", [0]; #veggies, "broccoli", [1]; #veggies, "spinach", [2]; #veggies, "lettuce", [3] ---
 
 --- no variable, value + type search ---
-srch("banana", txt, all) --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3]; #fruits2, "banana", txt, [0] ---
-srch("banana", txt, miss) --- #fruits, [0]; #fruits, [3]; #fruits2, [0] ---
+srch("banana", txt, all); --- #fruits, "banana", txt, [0]; #fruits, "banana", txt, [3]; #fruits2, "banana", txt, [0] ---
+srch("banana", txt, miss); --- #fruits, [0]; #fruits, [3]; #fruits2, [0] ---
 ```
 
 * ``sort(#vrb, A/AA/I/R)`` --> Sorts a certain array(`#vrb` in this case), and a sorting method. `A` is alphabetically, where it starts with smallest to biggest integers and dintegers, then txt, from a, to z, to A, to Z. `I` is for Invert, where it just inverts the order of the values, `AA` is the same as Alphabetically, but numbers are after the letters, meaning txt values come first. Finally, `R` just sorts randomly.
@@ -65,15 +65,15 @@ And finally, the last fun we'll have better we part ways :(
 Its simple and short, so i'll explain it in the following codeblock.
 ... bye :(
 ```
-wrt("Hello " + "Spaghetti!" + " :D") --- Hello Spaghetti! :D ---
-vrb("txt", txt, "Spaghetti... ")
-wrt("Bye, #txt :( ") --- Bye, Spaghetti... :( ---
-lngth(#txt) --- 13. Self explanatory. ---
-steal(#txt, 0, 8) --- Spaghetti. 0, 8 is the area of letters it will `steal` from the text string/variable. From the first, to the 8th character.
-occur(#txt, ".") --- 3. Shows how many times a text string appears in a text string/variable ---
-occur(#txt, "Spaghetti...") --- 1. You can also just do that. ---
-trim(#txt, "t", o) --- Spagheti... . Trims a text string from text string/variable. o stands for once ---
-trim(#txt, "t", r) ---Spaghei... . Can also use r for repeating trims ---
+wrt("Hello " + "Spaghetti!" + " :D"); --- Hello Spaghetti! :D ---
+vrb("txt", txt, "Spaghetti... ");
+wrt("Bye, #txt :( "); --- Bye, Spaghetti... :(. Also, to use hashtags in text strings without variable usage, simply add a backslash behind it. ---
+lngth(#txt); --- 13. Self explanatory. ---
+steal(#txt, 0, 8); --- Spaghetti. 0, 8 is the area of letters it will `steal` from the text string/variable. From the first, to the 8th character.
+occur(#txt, "."); --- 3. Shows how many times a text string appears in a text string/variable ---
+occur(#txt, "Spaghetti..."); --- 1. You can also just do that. ---
+trim(#txt, "t", o); --- Spagheti... . Trims a text string from text string/variable. o stands for once ---
+trim(#txt, "t", r); ---Spaghei... . Can also use r for repeating trims ---
 ```
 ---
 ```
