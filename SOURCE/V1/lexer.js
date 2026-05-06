@@ -1,12 +1,15 @@
-console.log("Getting code area...");
+console.log("Connecting to site...");
 const sourcesource = document.getElementById("codeArea");
 let source = sourcesource.value;
-
+console.log("Connected!");
 let tokens = [];
 let pos = 0;
+let errors = 0;
+console.log("Loading necessary functions...");
 function isDigit(char) {return char >= '0' && char <= '9'};
 function isLetter(char) {return char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z'};
 function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
+console.log("Functions loaded!");
 console.log("Loading tokenize function...");
 function tokenize() {
   while(pos < source.length) {
@@ -21,14 +24,21 @@ function tokenize() {
     else if(char === ' ') {pos++; continue}                                   
     else if(isDigit(char)) {
       let number = ``
+      const nextChar = source[pos+1];
+      const start = source[pos];
       while(isDigit(source[pos]) {number += source[pos]; pos++}
       if(source[pos] === '.') {
         number += '.';
         pos++;
         if(!(isDigit(source[pos]))) {
           throw new Error("It seems at position " + pos + ", you added a non-number to a number, either that or an extra decimal point. Fix it before retrying!");
+          errors++;
         }
         while(isDigit(source[pos]) {number += source[pos]; pos++}
+      }
+      if (number.startsWith('0') && isDigit(nextChar)) {
+        throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at position " + start + ". Please fix before retrying.");
+        errors++;
       }
       tokens.push({ type: "NUMBER", value: number })
     }                                                                                 
@@ -38,7 +48,8 @@ function tokenize() {
       pos++;
       while(source[pos] !== char) {string += source[pos]; pos++};
       if(pos >= source.length) {
-        throw new Error("You forgot to close your text string starting at position " + start + ". Please find and close it before retrying.")
+        throw new Error("You forgot to close your text string starting at position " + start + ". Please find and close it before retrying.");
+        errors++;
       }
       tokens.push({type: "TEXT", value: string});
       pos++;
@@ -58,6 +69,7 @@ function tokenize() {
         while(!(source[pos] === '-' && source[pos+1] === '-' && source[pos+2] === '-')) {pos++};
         if (pos >= source.length) {
           throw new Error("You forgot to close to close your comment starting at position " + start + ". Please find and close it before retrying.");
+          errors++;
         }
         pos += 3;
         continue;
@@ -109,13 +121,20 @@ function tokenize() {
       tokens.push({type: "IDENTIFIER", value: identifier});
     else {
       throw new Error("A character isn't recognized by us, more specifically the '" + char + "', at position " + pos + ". Please fix it before retrying.");
+      errors++;
     }
     }
   }
   tokens.push({type: "EOF", value: null})};
 }
-tokenize()
-console.log(tokens)
-
+console.log("Tokenize function succesfully loaded!");
+function lexer() {
+  tokenize()
+  console.log(tokens)
+  if (errors == 0) {console.log("Code ran succesfully with 0 errors!")}
+  else if (errors > 0) {console.log("Code ran, but encountered a few problems along the way. Please verify your code has no mistakes, if it doesnt, this one's on us.")};
+}
+console.log("Lexer completed!");
+lexer();
      
   
