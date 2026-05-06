@@ -1,9 +1,13 @@
-let source = `vrb("name", txt, "Alice")`;
+console.log("Getting code area...");
+const sourcesource = document.getElementById("codeArea");
+let source = sourcesource.value;
+
 let tokens = [];
 let pos = 0;
 function isDigit(char) {return char >= '0' && char <= '9'};
 function isLetter(char) {return char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z'};
 function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
+console.log("Loading tokenize function...");
 function tokenize() {
   while(pos < source.length) {
     const char = source[pos];
@@ -15,15 +19,27 @@ function tokenize() {
     else if(char === '}') {tokens.push({type: "RBRACE", value: '}'}); pos++}                  
     else if(char === ',') {tokens.push({type: "COMMA", value: ','}); pos++}                                            
     else if(char === ' ') {pos++; continue}                                   
-    else if(char >= '0' && char <= '9') {                                                  
-      let number = ``;
-      while(isDigit(source[pos])) {number += source[pos]; pos++};     
-      tokens.push({type: "NUMBER", value: number});
-    }                                                                                  
+    else if(isDigit(char)) {
+      let number = ``
+      while(isDigit(source[pos]) {number += source[pos]; pos++}
+      if(source[pos] === '.') {
+        number += '.';
+        pos++;
+        if(!(isDigit(source[pos]))) {
+          throw new Error("It seems at position " + pos + ", you added a non-number to a number, either that or an extra decimal point. Fix it before retrying!");
+        }
+        while(isDigit(source[pos]) {number += source[pos]; pos++}
+      }
+      tokens.push({ type: "NUMBER", value: number })
+    }                                                                                 
     else if(char === `"` || char === `'`) {                                          
-      let string = ``;       
+      let string = ``;
+      const start = pos;
       pos++;
-      while(source[pos] !== char) {string += source[pos]; pos++};                   
+      while(source[pos] !== char) {string += source[pos]; pos++};
+      if(pos >= source.length) {
+        throw new Error("You forgot to close your text string starting at position " + start + ". Please find and close it before retrying.")
+      }
       tokens.push({type: "TEXT", value: string});
       pos++;
     }                                                                              
@@ -37,8 +53,12 @@ function tokenize() {
     }
     else if(char === '-') {
       if(source[pos+1] === char && source[pos+2] === char) {
+        const start = pos;
         pos += 3;
         while(!(source[pos] === '-' && source[pos+1] === '-' && source[pos+2] === '-')) {pos++};
+        if (pos >= source.length) {
+          throw new Error("You forgot to close to close your comment starting at position " + start + ". Please find and close it before retrying.");
+        }
         pos += 3;
         continue;
       }
@@ -87,6 +107,9 @@ function tokenize() {
       let identifier = ``;
       while(isAlphaNumeric(source[pos])) {identifier += source[pos]; pos++};
       tokens.push({type: "IDENTIFIER", value: identifier});
+    else {
+      throw new Error("A character isn't recognized by us, more specifically the '" + char + "', at position " + pos + ". Please fix it before retrying.");
+    }
     }
   }
   tokens.push({type: "EOF", value: null})};
