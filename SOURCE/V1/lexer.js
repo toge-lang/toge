@@ -33,7 +33,7 @@ function tokenize(source) {
         while(isDigit(source[pos])) {number += source[pos]; pos++}
       }
       if (number.startsWith('0') && isDigit(nextChar)) {
-        throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at position " + start + ". Please fix before retrying."); // error code 4
+        throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at position " + start + ". Please fix before retrying.");
       }
       tokens.push({ type: "NUMBER", value: number })
     }
@@ -53,8 +53,8 @@ function tokenize(source) {
       else if(source[pos+1] !== char && source[pos+2] !== char) {tokens.push({type: "EQ", value: '='}); pos++}; // equals token
     }
     else if(char === '?') {
-      if(source[pos+1] === char && source[pos+2] !== char) {tokens.push({type: "COND_EQ", value: '?'}); pos++} // condition equals token
-      else if(source[pos+1] !== char && source[pos+2] !== char) {tokens.push({type: "COND_STRICT_EQ", value: '??'}); pos += 2}; // type conditions equals token
+      if(source[pos+1] === char) {tokens.push({type: "COND_STRICT_EQ", value: '??'}); pos += 2} // condition strict equals token
+      else {tokens.push({type: "COND_EQ", value: '?'}); pos++}; // condition equals token
     }
     else if(char === '-') {
       if(source[pos+1] === char && source[pos+2] === char) { // comments (no tokens)
@@ -99,7 +99,7 @@ function tokenize(source) {
     else if(char === '#') { // variable reference token
       let vrb = ``;
       pos++;
-      while(pos < source.length && isAlphaNumeric(source[pos]) && pos < source.length) {vrb += source[pos]; pos++};
+      while(pos < source.length && isAlphaNumeric(source[pos])) {vrb += source[pos]; pos++};
       tokens.push({type: "VARIABLE", value: vrb});
     }
     else if(char === '$') { // parameter reference token
@@ -110,7 +110,7 @@ function tokenize(source) {
     }
     else if(isLetter(char)) { // identifier token
       let identifier = ``;
-      while(isAlphaNumeric(source[pos])) {identifier += source[pos]; pos++};
+      while(pos < source.length && isAlphaNumeric(source[pos])) {identifier += source[pos]; pos++};
       tokens.push({type: "IDENTIFIER", value: identifier});
     }
     else {
@@ -124,9 +124,7 @@ console.log("Tokenize function succesfully loaded!");
 function lexer() {
   const source = document.getElementById("codeArea").value; 
   const temp = `vrb("pies", arr, [3.14, "pie"]); wrt(#pies);`
-  console.log(tokenize(source));
+  console.log(tokenize(temp));
 }
 console.log("Lexer completed!");
 lexer();
-     
-  
