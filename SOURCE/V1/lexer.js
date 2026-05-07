@@ -122,7 +122,8 @@ function tokenize(source) {
 console.log("Tokenize function succesfully loaded!");
 function lexer() {
   const source = document.getElementById("codeArea").value; 
-  tokenize(source);
+  const temp = `vrb("pies", arr, [3.14, "pie"]); wrt(#pies);`
+  tokenize(temp);
   console.log(tokens);
 }
 console.log("Lexer completed!");
