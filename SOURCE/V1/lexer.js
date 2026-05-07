@@ -17,6 +17,7 @@ function tokenize(source) {
     else if(char === '}') {tokens.push({type: "RBRACE", value: '}'}); pos++} // right brace token
     else if(char === ',') {tokens.push({type: "COMMA", value: ','}); pos++} // comma token
     else if(char === ';') {tokens.push({type: "SEMICOLON", value: ';'}); pos++} // semicolon token
+    else if(chae === ':') {tokens.push({type: "COLON", value: ':'}); pos++} // colon token
     else if(char === ' ') {pos++; continue} // whitespace(no token)
     else if(isDigit(char)) { // integers and decimal integers token
       let number = ``
