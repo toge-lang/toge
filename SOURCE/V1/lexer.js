@@ -1,6 +1,6 @@
 console.log("Loading necessary functions..."); 
 function isDigit(char) {return char >= '0' && char <= '9'};
-function isLetter(char) {return char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z'};
+function isLetter(char) {return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')};
 function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
 console.log("Functions loaded!");
 console.log("Loading tokenize function...");
@@ -62,7 +62,7 @@ function tokenize(source) {
         pos += 3;
         while(!(source[pos] === char && source[pos+1] === char && source[pos+2] === char) && pos < source.length) {pos++};
         if (pos >= source.length) {
-          throw new Error("You forgot to close to close your comment starting at position " + start + ". Please find and close it before retrying."); // error code 3
+          throw new Error("You forgot to close your comment starting at position " + start + ". Please find and close it before retrying."); // error code 3
         }
         pos += 3;
         continue;
@@ -99,13 +99,13 @@ function tokenize(source) {
     else if(char === '#') { // variable reference token
       let vrb = ``;
       pos++;
-      while(isAlphaNumeric(source[pos])) {vrb += source[pos]; pos++};
+      while(pos < source.length && isAlphaNumeric(source[pos]) && pos < source.length) {vrb += source[pos]; pos++};
       tokens.push({type: "VARIABLE", value: vrb});
     }
     else if(char === '$') { // parameter reference token
       let param = ``;
       pos++;
-      while(isAlphaNumeric(source[pos])) {param += source[pos]; pos++};
+      while(pos < source.length && isAlphaNumeric(source[pos])) {param += source[pos]; pos++};
       tokens.push({type: "PARAMETER", value: param});
     }
     else if(isLetter(char)) { // identifier token
@@ -124,8 +124,7 @@ console.log("Tokenize function succesfully loaded!");
 function lexer() {
   const source = document.getElementById("codeArea").value; 
   const temp = `vrb("pies", arr, [3.14, "pie"]); wrt(#pies);`
-  tokenize(temp);
-  console.log(tokens);
+  console.log(tokenize(source));
 }
 console.log("Lexer completed!");
 lexer();
