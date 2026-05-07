@@ -1,13 +1,13 @@
-let tokens = []; // tokens array
-let pos = 0; // source position(the (pos)th character of the source)
 console.log("Loading necessary functions..."); 
 function isDigit(char) {return char >= '0' && char <= '9'};
 function isLetter(char) {return char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z'};
 function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
 console.log("Functions loaded!");
 console.log("Loading tokenize function...");
-function tokenize() {
+function tokenize(source) {
   while(pos < source.length) {
+    let tokens = []; // tokens array
+    let pos = 0; // source position(the (pos)th character of the source)
     const char = source[pos]; // current character, determined by pos of source
     if(char === '(') {tokens.push({type: "LPAREN", value: '('}); pos++} // left paranthesis token
     else if(char === ')') {tokens.push({type: "RPAREN", value: ')'}); pos++} // right paranthesis token
