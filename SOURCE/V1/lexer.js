@@ -4,11 +4,11 @@ function isLetter(char) {return char >= 'a' && char <= 'z' || char >= 'A' && cha
 function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
 console.log("Functions loaded!");
 console.log("Loading tokenize function...");
-function tokenize(source) {
+function tokenize(source) { 
+  let tokens = []; // tokens array
+  let pos = 0; // source position(the (pos)th character of the source)
   while(pos < source.length) {
-    let tokens = []; // tokens array
-    let pos = 0; // source position(the (pos)th character of the source)
-    const char = source[pos]; // current character, determined by pos of source
+    const char = source[pos];
     if(char === '(') {tokens.push({type: "LPAREN", value: '('}); pos++} // left paranthesis token
     else if(char === ')') {tokens.push({type: "RPAREN", value: ')'}); pos++} // right paranthesis token
     else if(char === '[') {tokens.push({type: "LBRACK", value: '['}); pos++} // left bracket token
@@ -117,6 +117,7 @@ function tokenize(source) {
     }  
   }
   tokens.push({type: "EOF", value: null}); // end token
+  return tokens;
 }
 console.log("Tokenize function succesfully loaded!");
 function lexer() {
