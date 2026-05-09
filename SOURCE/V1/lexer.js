@@ -127,3 +127,4 @@ function lexer() {
 }
 console.log("Lexer completed!");
 lexer();
+const tokens = tokenize(document.getElementById("codeArea").value);
