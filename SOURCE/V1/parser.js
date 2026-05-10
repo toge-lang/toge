@@ -83,8 +83,7 @@ function parseComparison() {
       left: left,
       right: right
     }
-  }
-} 
+  } 
   return left;
 }
 function parseAS() {
@@ -210,6 +209,34 @@ function parseVrb() {
     value: args[2]
   }
 }
+function parseStatement() {
+  if(peek().type === "IDENTIFIER") {
+    if(peek().value === "vrb") {
+      return parseVrb();
+    }
+    else if(peek().value === "if") {
+      return parseIf();
+    }
+    else if(peek().value === "until") {
+      return parseUntil();
+    }
+    else if(peek().value === "for") {
+      return parseFor();
+    }
+    else if(peek().value === "newf") {
+      return parseNewf();
+    }
+    else {
+      const node = parseFunctionCall();
+      eat("SEMICOLON");
+      return node;
+    }
+  }
+  else {
+    throw new Error("Token " + current + " isn't a statement, even though we expected it to be a statement(Got a "+ peek().type + " instead. Please fix before retrying.");
+    //error code 8
+  }
+}
 function parseIf() {
   eat("IDENTIFIER"); 
   eat("LPAREN");
@@ -259,5 +286,49 @@ function parseIf() {
     body: body,
     bifBlocks: bifBlocks,
     elseBlock: elseBlock
+  };
+}
+function parseFor() {
+  eat("IDENTIFIER"); // eat "for"
+  eat("LPAREN");
+  const iterVar = parseArgument();
+  eat("IDENTIFIER"); // eat "in"
+  const iterable = parseExpression();
+  eat("RPAREN");
+  eat("LBRACK");
+  const body = [];
+  while(peek().type !== "RBRACK") {
+    body.push(parseStatement());
+  }
+  eat("RBRACK");
+  eat("SEMICOLON");
+  return {
+    type: "ForStatement",
+    iterVar: iterVar,
+    iterable: iterable,
+    body: body
+  };
+}
+function parseUntil() {
+  eat("IDENTIFIER"); // eat "until"
+  eat("LPAREN");
+  
+  // until is like a while loop but inverted
+  // Parse the condition
+  
+  eat("RPAREN");
+  eat("LBRACK");
+  
+  const body = [];
+  while(peek().type !== "RBRACK") {
+    body.push(parseStatement());
+  }
+  
+  eat("RBRACK");
+  eat("SEMICOLON");
+  
+  return {
+    type: "UntilStatement",
+    // what fields do you need here?
   };
 }
