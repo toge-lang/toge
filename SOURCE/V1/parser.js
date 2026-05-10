@@ -7,13 +7,13 @@ function peek() {
   return tokens[current];
 }
 function peekAhead() {
-  if(current >= tokens.length) {
+  if(current+1 >= tokens.length) {
     throw new Error("The end of the code is malformed/incomplete, causing in an error at token " + current+1 + ". Please fix before retrying.");
   }
   return tokens[current+1];
 }
 function peekBehind() {
-  if(current >= tokens.length) {
+  if(current-1 >= tokens.length) {
     throw new Error("The end of the code is malformed/incomplete, causing in an error at token " + current-1 + ". Please fix before retrying.");
   }
   return tokens[current-1];
@@ -111,6 +111,10 @@ function parseArgument() {
     return {
       type: "ParameterReference",
       name: token.value
+    }
+  }
+  else {
+    throw new Error("Invalid argument at token " + current + ". It is an unrecognized character that has been used as an argument. Please fix before retrying.")
   }
 }
 function parseFunctionCall() {
