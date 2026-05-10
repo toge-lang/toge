@@ -28,7 +28,65 @@ function eat(expectedType) {
   }
 }
  // -------------------------------------------------------------------------- PARSER -----------------------------------------------------------------------------//
-function parseExpression() {return parseAS()};
+function parseExpression() {return parseLogicalOR()};
+function parseLogicalOR() {
+  let left = parseLogicalXOR(); 
+  while(peek().type === "OR_GATE") {
+    const operator = eat("OR_GATE").value;
+    const right = parseLogicalXOR();
+    left = {
+      type: "BinaryOperation",
+      operator: operator,
+      left: left,
+      right: right
+    }
+  }  
+  return left;
+}
+function parseLogicalXOR() {
+  let left = parseLogicalAND(); 
+  while(peek().type === "XOR_GATE") {
+    const operator = eat("XOR_GATE").value;
+    const right = parseLogicalAND();
+    left = {
+      type: "BinaryOperation",
+      operator: operator,
+      left: left,
+      right: right
+    }
+  }
+  return left;
+}
+function parseLogicalAND() {
+  let left = parseComparison();  
+  while(peek().type === "AND_GATE") {
+    const operator = eat("AND_GATE").value;
+    const right = parseComparison();
+    left = {
+      type: "BinaryOperation",
+      operator: operator,
+      left: left,
+      right: right
+    }
+  }  
+  return left;
+}
+
+function parseComparison() {
+  let left = parseAS();
+  if(peek().type === "COND_EQ" || peek().type === "COND_STRICT_EQ" || peek().type === "EQ" || peek().type === "STRICT_EQ") {
+    const operator = eat(peek().type).value;
+    const right = parseAS();
+    left = {
+      type: "BinaryOperation",
+      operator: operator,
+      left: left,
+      right: right
+    }
+  }
+} 
+  return left;
+}
 function parseAS() {
   let left = parseMD(); 
   while(peek().type === "PLUS" || peek().type === "MINUS") {
@@ -55,7 +113,6 @@ function parseMD() {
       right: right
     }
   }
-  
   return left;
 }
 function parsePW() {
@@ -127,10 +184,80 @@ function parseFunctionCall() {
       eat("COMMA");
     }
   }
-  eat("RPAREN")
+  eat("RPAREN");
   return {
     type: "FunctionCall",
     name: nameToken.value,
     arguments: args
+  };
+}
+function parseVrb() {
+  eat("IDENTIFIER"); 
+  eat("LPAREN");
+  const args = [];
+  while(peek().type !== "RPAREN") {
+    args.push(parseArgument());
+    if(peek().type === "COMMA") {
+      eat("COMMA");
+    }
+  }
+  eat("RPAREN");
+  eat("SEMICOLON");
+  return {
+    type: "VariableDeclaration",
+    variableName: args[0],
+    typeValue: args[1],
+    value: args[2]
+  }
+}
+function parseIf() {
+  eat("IDENTIFIER"); 
+  eat("LPAREN");
+  const condition = parseExpression();
+  eat("RPAREN");
+  eat("LBRACK"); 
+  const body = []; 
+  while(peek().type !== "RBRACK") {
+    body.push(parseStatement());
+  }
+  eat("RBRACK");
+  const bifBlocks = []; 
+  let elseBlock = null;
+  
+  while(peek().type === "IDENTIFIER" && peek().value === "bif") {
+    eat("IDENTIFIER"); 
+    eat("LPAREN");
+    const bifCondition = parseExpression(); 
+    eat("RPAREN");
+    eat("LBRACK");
+    const bifBody = []; 
+    while(peek().type !== "RBRACK") {
+      bifBody.push(parseStatement());
+    }
+    eat("RBRACK");
+    bifBlocks.push({
+      type: "BifStatement",
+      condition: bifCondition,
+      body: bifBody
+    });
+  }
+  if(peek().type === "IDENTIFIER" && peek().value === "else") {
+    eat("IDENTIFIER");
+    eat("LBRACK");
+    const elseBody = [];
+    while(peek().type !== "RBRACK") {
+      elseBody.push(parseStatement());
+    }
+    elseBlock = {
+      type: "ElseStatement",
+      body: elseBody
+    }
+  }
+  return {
+    type: "IfStatement",
+    condition: condition,
+    body: body,
+    bifBlocks: bifBlocks,
+    elseBlock: elseBlock
   };
 }
