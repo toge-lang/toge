@@ -1,8 +1,23 @@
 let current = 0;
 // tokens variable used from lexer.js that is connected via html file, no need to redeclare
-function peek() {return tokens[current]};
-function peekAhead() {return tokens[current+1]};
-function peekBehind() {return tokens[current-1]};
+function peek() {
+  if(current >= tokens.length) {
+    throw new Error("The end of the code is malformed/incomplete, causing in an error at token " + current + ". Please fix before retrying.");
+  }
+  return tokens[current];
+}
+function peekAhead() {
+  if(current >= tokens.length) {
+    throw new Error("The end of the code is malformed/incomplete, causing in an error at token " + current+1 + ". Please fix before retrying.");
+  }
+  return tokens[current+1];
+}
+function peekBehind() {
+  if(current >= tokens.length) {
+    throw new Error("The end of the code is malformed/incomplete, causing in an error at token " + current-1 + ". Please fix before retrying.");
+  }
+  return tokens[current-1];
+}
 function eat(expectedType) {
   const token = peek();
   if(token.type === expectedType) {
