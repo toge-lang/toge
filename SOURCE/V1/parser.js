@@ -13,8 +13,8 @@ function peekAhead() {
   return tokens[current+1];
 }
 function peekBehind() {
-  if(current-1 >= tokens.length) {
-    throw new Error("The end of the code is malformed/incomplete, causing in an error at token " + current-1 + ". Please fix before retrying.");
+  if(current-1 >= 0) {
+    throw new Error("The start of the code is malformed/incomplete, causing in an error at token " + current-1 + ". Please fix before retrying.");
   }
   return tokens[current-1];
 }
