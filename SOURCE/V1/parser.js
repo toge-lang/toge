@@ -300,7 +300,7 @@ function parseFor() {
   while(peek().type !== "RBRACK") {
     body.push(parseStatement());
   }
-  eat("BBRACK");
+  eat("RBRACK");
   eat("RPAREN");
   eat("SEMICOLON");  
   return {
