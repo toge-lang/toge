@@ -233,7 +233,7 @@ function parseStatement() {
     }
   }
   else {
-    throw new Error("Token " + current + " isn't a statement, even though we expected it to be a statement(Got a "+ peek().type + " instead. Please fix before retrying.");
+    throw new Error("Token " + current + " isn't a statement, even though we expected it to be a statement(Got a "+ peek().type + " instead). Please fix before retrying.");
     //error code 8
   }
 }
@@ -286,49 +286,81 @@ function parseIf() {
     body: body,
     bifBlocks: bifBlocks,
     elseBlock: elseBlock
-  };
+  }
 }
 function parseFor() {
-  eat("IDENTIFIER"); // eat "for"
-  eat("LPAREN");
-  const iterVar = parseArgument();
-  eat("IDENTIFIER"); // eat "in"
-  const iterable = parseExpression();
-  eat("RPAREN");
-  eat("LBRACK");
+  eat("IDENTIFIER");
+  eat("LPAREN");  
+  const variable = parseArgument(); 
+  eat("SEMICOLON");
+  const condition = parseExpression();
+  eat("SEMICOLON");
+  eat("LBRACK");  
   const body = [];
   while(peek().type !== "RBRACK") {
     body.push(parseStatement());
   }
-  eat("RBRACK");
-  eat("SEMICOLON");
+  eat("BBRACK");
+  eat("RPAREN");
+  eat("SEMICOLON");  
   return {
     type: "ForStatement",
-    iterVar: iterVar,
-    iterable: iterable,
+    variable: variable,
+    condition: condition,
     body: body
-  };
+  }
 }
 function parseUntil() {
-  eat("IDENTIFIER"); // eat "until"
+  eat("IDENTIFIER");
   eat("LPAREN");
-  
-  // until is like a while loop but inverted
-  // Parse the condition
-  
+  const condition = parseExpression();
   eat("RPAREN");
   eat("LBRACK");
-  
   const body = [];
   while(peek().type !== "RBRACK") {
     body.push(parseStatement());
-  }
-  
+  } 
   eat("RBRACK");
-  eat("SEMICOLON");
-  
+  eat("SEMICOLON"); 
   return {
     type: "UntilStatement",
-    // what fields do you need here?
-  };
+    condition: condition,
+    body: body
+  }
+}
+function parseNewf() {
+  eat("IDENTIFIER");
+  eat("LPAREN");  
+  const nameToken = eat("STRING");
+  eat("COMMA");
+  const codeBlock = eat("VARIABLE");
+  eat("COMMA");  
+  eat("LBRACE");
+  const params = {};
+  while(peek().type !== "RBRACE") {
+    const paramName = eat("IDENTIFIER").value;
+    eat("COLON");
+    const paramType = eat("IDENTIFIER").value;
+    params[paramName] = paramType;
+    if(peek().type === "COMMA") {
+      eat("COMMA");
+    }
+  }
+  eat("RBRACE");  
+  eat("RPAREN");
+  eat("SEMICOLON");
+  return {
+    type: "FunctionDefinition",
+    name: nameToken.value,
+    code: codeBlock.value,
+    parameters: params
+  }
+}
+function parseProgram() {
+  const statements = [];
+  while(peek().type !== "EOF") {statements.push(parseStatement())};
+  return {
+    type: "Program",
+    statements: statements
+  }
 }
