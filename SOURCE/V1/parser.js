@@ -114,7 +114,7 @@ function parseArgument() {
     }
   }
   else {
-    throw new Error("Invalid argument at token " + current + ". It is an unrecognized character that has been used as an argument. Please fix before retrying.")
+    throw new Error("Invalid argument at token " + current + ". It is an unrecognized character that has been used as an argument. Please fix before retrying.") // error code 7
   }
 }
 function parseFunctionCall() {
