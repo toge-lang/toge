@@ -19,7 +19,7 @@ function tokenize(source) {
     else if(char === ',') {tokens.push({type: "COMMA", value: ','}); pos++} // comma token
     else if(char === ';') {tokens.push({type: "SEMICOLON", value: ';'}); pos++} // semicolon token
     else if(char === ':') {tokens.push({type: "COLON", value: ':'}); pos++} // colon token
-    else if(char === ' ') {pos++; continue} // whitespace(no token)
+    else if(char === ' ' || char === '\t' || char === '\n' || char == '\r') {pos++; continue} // whitespace(no token); \t is a tab, \n is a newline via enter, and \r is uhhhhhhhhh wait what is it again
     else if(isDigit(char)) { // integers and decimal integers token
       let number = ``
       const nextChar = source[pos+1];
@@ -51,7 +51,7 @@ function tokenize(source) {
     }                                                                              
     else if(char === '=') {
       if(pos + 1 < source.length && source[pos+1] === char && pos + 2 < source.length && source[pos+2] !== char) {tokens.push({type: "STRICT_EQ", value: '=='}); pos += 2} // type equals tokens
-      else if((pos + 1 >= source.length || source[pos+1] !== char) && (pos + 2 >= source.length || source[pos+2] !== char)) {tokens.push({type: "EQ", value: '='}); pos++}; // equals token
+      else if(pos + 1 >= source.length || source[pos+1] !== '=') {tokens.push({type: "EQ", value: '='}); pos++}; // equals token
     }
     else if(char === '?') {
       if(pos + 1 < source.length && source[pos+1] === char) {tokens.push({type: "COND_STRICT_EQ", value: '??'}); pos += 2} // condition strict equals token
