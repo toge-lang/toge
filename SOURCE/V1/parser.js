@@ -1,3 +1,4 @@
+// ---------------------------------------------------------------------------- PARSER -----------------------------------------------------------------------------//
 let current = 0;
 // tokens variable used from lexer.js that is connected via html file, no need to redeclare
 function peek() {
@@ -27,7 +28,6 @@ function eat(expectedType) {
     throw new Error("At token " + current + ", the " + expectedType + " token was expected, but it was replaced by " + token.type + " ('" + token.value + "'). Please replace it with the correct type before trying again."); // error code 6
   }
 }
- // -------------------------------------------------------------------------- PARSER -----------------------------------------------------------------------------//
 function parseExpression() {return parseLogicalOR()};
 function parseLogicalOR() {
   let left = parseLogicalXOR(); 
@@ -364,3 +364,4 @@ function parseProgram() {
     statements: statements
   }
 }
+ // ---------------------------------------------------------------------------- PARSER END ---------------------------------------------------------------------------------//
