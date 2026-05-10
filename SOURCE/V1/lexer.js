@@ -1,3 +1,4 @@
+// ----------------------------------------------------------------------------- LEXER ------------------------------------------------------------------------------//
 console.log("Loading necessary functions..."); 
 function isDigit(char) {return char >= '0' && char <= '9'};
 function isLetter(char) {return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')};
@@ -128,3 +129,4 @@ function lexer() {
 console.log("Lexer completed!");
 lexer();
 const tokens = tokenize(document.getElementById("codeArea").value);
+// -------------------------------------------------------------------------- LEXER END ------------------------------------------------------------------------------//
