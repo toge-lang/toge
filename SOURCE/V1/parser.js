@@ -57,7 +57,7 @@ function parsePW() {
   }
   return left;
 }
-parseArgument() {
+function parseArgument() {
   if(peek().type === "NUMBER") {
     const token = eat("NUMBER");
     return {
@@ -85,24 +85,24 @@ parseArgument() {
     const token = eat("IDENTIFIER");
     return {
       type: "Identifier",
-      name: token.value;
+      name: token.value
     }
   }
-  else if(peek().type === "IDENTIFIER" && peekAhead().type === "IDENTIFIER") {
+  else if(peek().type === "IDENTIFIER" && peekAhead().type === "LPAREN") {
     return parseFunctionCall();
   }
   else if(peek().type === "PARAMETER") {
     const token = eat("PARAMETER");
     return {
       type: "ParameterReference",
-      name: token.value;
+      name: token.value
   }
 }
 function parseFunctionCall() {
   const nameToken = eat("IDENTIFIER");
   eat("LPAREN"); 
   const args = []; 
-  while(peek().value !== "RPAREN") {
+  while(peek().type !== "RPAREN") {
     args.push(parseArgument());
     if(peek().type === "COMMA") {
       eat("COMMA");
