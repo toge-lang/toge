@@ -2,6 +2,7 @@ let current = 0;
 // tokens variable used from lexer.js that is connected via html file, no need to redeclare
 function peek() {return tokens[current]};
 function peekAhead() {return tokens[current+1]};
+function peekBehind() {return tokens[current-1]};
 function eat(expectedType) {
   const token = peek();
   if(token.type === expectedType) {
@@ -11,7 +12,51 @@ function eat(expectedType) {
     throw new Error("At token " + current + ", the " + expectedType + " token was expected, but it was replaced by " + token.type + " ('" + token.value + "'). Please replace it with the correct type before trying again."); // error code 6
   }
 }
-// ------------------------------------------ PARSER -------------------------------------------- //
+ // -------------------------------------------------------------------------- PARSER -----------------------------------------------------------------------------//
+function parseExpression() {return parseAS()};
+function parseAS() {
+  let left = parseMD(); 
+  while(peek().type === "PLUS" || peek().type === "MINUS") {
+    const operator = eat(peek().type).value;
+    const right = parseMD();
+    left = {
+      type: "BinaryOperation",
+      operator: operator,
+      left: left,
+      right: right
+    }
+  }
+  return left;
+}
+function parseMD() {
+  let left = parsePW();
+  while(peek().type === "TIMES" || peek().type === "DIVIDE_RS" || peek().type === "DIVIDE_RM") {
+    const operator = eat(peek().type).value;
+    const right = parsePW();
+    left = {
+      type: "BinaryOperation",
+      operator: operator,
+      left: left,
+      right: right
+    }
+  }
+  
+  return left;
+}
+function parsePW() {
+  let left = parseArgument();
+  while(peek().type === "POWER") {
+    const operator = eat("POWER").value;
+    const right = parseArgument();
+    left = {
+      type: "BinaryOperation",
+      operator: operator,
+      left: left,
+      right: right
+    }
+  }
+  return left;
+}
 parseArgument() {
   if(peek().type === "NUMBER") {
     const token = eat("NUMBER");
@@ -51,11 +96,12 @@ parseArgument() {
     return {
       type: "ParameterReference",
       name: token.value;
+  }
 }
 function parseFunctionCall() {
-  const nameToken = eat("IDENTIFIER"); // get the function name
-  eat("LPAREN"); // expect opening paren
-  const args = []; // collect arguments here
+  const nameToken = eat("IDENTIFIER");
+  eat("LPAREN"); 
+  const args = []; 
   while(peek().value !== "RPAREN") {
     args.push(parseArgument());
     if(peek().type === "COMMA") {
