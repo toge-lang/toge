@@ -1,3 +1,4 @@
+// evaluating ---
 let database = {}; // stores all variable names and their values 
 function evaluate(node) { // helper function for execute(), defines most values and operations
   if(node.type === "Literal") { // strings and numbers
@@ -34,10 +35,23 @@ function evaluate(node) { // helper function for execute(), defines most values 
     return database[node.name];
   }
 }
+// functions ---
+function wrt(args) {
+  console.log(args.join(' '));
+}
+// statement executer ---
 function execute(node) {
   if(node.type === "VariableDeclaration") {
     let name = node.name;
     let value = evaluate(node.value);
     database[name] = value;
   }
+  if (node.type === "FunctionCall") {
+    if(node.name === "wrt") {
+      const evaluatedArgs = node.arguments.map(arg => evaluate(arg));
+      wrt(evaluatedArgs);
+    }
+  }
+}
+
   
