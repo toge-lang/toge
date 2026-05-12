@@ -39,6 +39,27 @@ function evaluate(node) { // helper function for execute(), defines most values 
 function wrt(args) {
   console.log(args.join(' '));
 }
+function validateInput(type, value) {
+  let regex;
+
+  // Check if type is 'l' or 'L' for letters
+  if (type.toLowerCase() === 'l') {
+    regex = /^[a-zA-Z]*$/;
+  } 
+  // Otherwise assume 'n' or 'N' for numbers
+  else if(type.toLowerCase() === 'n') {
+    regex = /^[0-9]*$/;
+  }
+  else {
+    throw new Error("invalid type for tlk function")
+  return regex.test(value);
+}
+
+// Tests
+console.log(validateInput('L', 'Apple')); // true
+console.log(validateInput('n', '100'));   // true
+console.log(validateInput('l', '123'));   // false
+
 // statement executer ---
 function execute(node) {
   if(node.type === "VariableDeclaration") {
