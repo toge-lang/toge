@@ -9,7 +9,7 @@ function evaluate(node) { // helper function for execute(), defines most values 
       return database[node.name];
     }
     else {
-      throw new Error("We have found no variable with the '"+ node.name +"' name. Please declare that variable before retrying.") // error code 9
+      throw new Error("There is no found variable with the name '"+ node.name +"'. Please declare that variable before retrying.") // error code 9
     }
   }
   else if(node.type === "BinaryOperation") { // binary operations like comparisons and 3 + 2
@@ -36,6 +36,26 @@ function evaluate(node) { // helper function for execute(), defines most values 
   }
 }
 // functions ---
+function getType(value) {
+  if(typeof value === "number") {
+    return Number.isInteger(value) ? "int" : "dint";
+  }
+  else if(typeof value === "string") {
+    return "txt";
+  }
+  else if(typeof value === "boolean") {
+    return "stt";
+  }
+  else if(Array.isArray(value)) {
+    return "arr";
+  }
+  else if(typeof value === "object") {
+    return "obj";
+  }
+  else {
+    return "unknown";
+  }
+}
 function wrt(args) {
   console.log(args.join(''));
 } 
@@ -44,7 +64,7 @@ function tlk(args) {
   const promptText = args[1] || "Enter input: "; 
   const userInput = prompt(promptText);
   if(typeof prompt !== "string" && typeof prompt !== "number") {
-    throw new Error("Tlk function cannot have prompt as something other than a string or a number. Please locate and fix before retrying.");
+    throw new Error("Tlk function cannot have prompt as something other than a string or a number. Please locate and fix before retrying."); // error code 10
   }
   if(inputType.toLowerCase() === "n") {
     return parseFloat(userInput);  // convert to number
@@ -61,10 +81,16 @@ function ret(args) {
     return args;
   }
 }
+
+
+function type(args) {
+  const value = args[0];
+  return getType(value);
+}
 // statement executer ---
 function execute(node) {
   if(node.type === "VariableDeclaration") {
-    let name = node.name;
+    let name = node.variableName;
     let value = evaluate(node.value);
     database[name] = value;
   }
