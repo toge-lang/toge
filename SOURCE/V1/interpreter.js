@@ -38,27 +38,21 @@ function evaluate(node) { // helper function for execute(), defines most values 
 // functions ---
 function wrt(args) {
   console.log(args.join(' '));
-}
-function validateInput(type, value) {
-  let regex;
-
-  // Check if type is 'l' or 'L' for letters
-  if (type.toLowerCase() === 'l') {
-    regex = /^[a-zA-Z]*$/;
-  } 
-  // Otherwise assume 'n' or 'N' for numbers
-  else if(type.toLowerCase() === 'n') {
-    regex = /^[0-9]*$/;
+} 
+function tlk(args) {
+  const inputType = args[0];
+  const prompt = args[1] || "Enter input: "; 
+  const userInput = prompt(prompt);
+  if(typeof prompt !== "string" || typeof prompt !== "number") {
+    throw new Error("Tlk function cannot have prompt as something other than a string or a number. Please locate and fix before retrying.");
   }
-  else {
-    throw new Error("invalid type for tlk function")
-  return regex.test(value);
+  if(inputType.toLowerCase === "n") {
+    return parseFloat(userInput);  // convert to number
+  }
+  else if(inputType.toLowerCase === "l") {
+    return userInput;  // keep as string
+  }
 }
-
-// Tests
-console.log(validateInput('L', 'Apple')); // true
-console.log(validateInput('n', '100'));   // true
-console.log(validateInput('l', '123'));   // false
 
 // statement executer ---
 function execute(node) {
@@ -69,10 +63,20 @@ function execute(node) {
   }
   if (node.type === "FunctionCall") {
     if(node.name === "wrt") {
-      const evaluatedArgs = node.arguments.map(arg => evaluate(arg));
-      wrt(evaluatedArgs);
+      const evalArgs = node.arguments.map(args => evaluate(args));
+      wrt(evalArgs);
+    }
+    else if(node.name === "tlk") {
+      const evalArgs = node.arguments.map(args => evaluate(args));
+      return tlk(evalArgs);
+    }
+    else if(node.name === "ext") {
+      let exitCode = 0;
+      if(node.arguments.length > 0) {
+      exitCode = evaluate(node.arguments[0]);
+      }
+      throw new Error("Program exited with error code " + exitCode +".");
     }
   }
 }
 
-  
