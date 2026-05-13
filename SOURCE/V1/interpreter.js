@@ -37,23 +37,30 @@ function evaluate(node) { // helper function for execute(), defines most values 
 }
 // functions ---
 function wrt(args) {
-  console.log(args.join(' '));
+  console.log(args.join(''));
 } 
 function tlk(args) {
   const inputType = args[0];
-  const prompt = args[1] || "Enter input: "; 
-  const userInput = prompt(prompt);
-  if(typeof prompt !== "string" || typeof prompt !== "number") {
+  const promptText = args[1] || "Enter input: "; 
+  const userInput = prompt(promptText);
+  if(typeof prompt !== "string" && typeof prompt !== "number") {
     throw new Error("Tlk function cannot have prompt as something other than a string or a number. Please locate and fix before retrying.");
   }
-  if(inputType.toLowerCase === "n") {
+  if(inputType.toLowerCase() === "n") {
     return parseFloat(userInput);  // convert to number
   }
-  else if(inputType.toLowerCase === "l") {
+  else if(inputType.toLowerCase() === "l") {
     return userInput;  // keep as string
   }
 }
-
+function ret(args) {
+  if(args.length === 1) {
+    return args[0];
+  }
+  else {
+    return args;
+  }
+}
 // statement executer ---
 function execute(node) {
   if(node.type === "VariableDeclaration") {
@@ -69,6 +76,10 @@ function execute(node) {
     else if(node.name === "tlk") {
       const evalArgs = node.arguments.map(args => evaluate(args));
       return tlk(evalArgs);
+    }
+    else if(node.name === "ret") {
+      const evalArgs = node.arguments.map(args => evaluate(args));
+      return ret(evalArgs);
     }
     else if(node.name === "ext") {
       let exitCode = 0;
