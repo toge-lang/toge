@@ -36,7 +36,7 @@ Alright, so we already learned how to declare/pronounce variables, now, how do w
 Its quite simple actually.
 ```
 #name = "Hello World!";
----variable names, even in functions(except declaration), are always are beginned with a # to both help readabillity AND parser problems---
+---variable names, even in functions(except declaration), are always begun with a # to both help readabillity AND parser problems---
 
 wrt(#name);
 ---outputs: Hello World!---
