@@ -1,6 +1,6 @@
 // evaluating AST ---
 let database = {};
-const functionSignatures = {
+const functionSignatures = { //rules of arguments for each function, 'signatures' if you will
   "wait": { 
     args: [
       {pos: 0, name: "unit", required: false},
@@ -25,7 +25,27 @@ const functionSignatures = {
     args: [{pos: 0, name: "value", required: true}],
     minArgs: 1,
     maxArgs: 1
+  },
+  "ext": {
+    args: [{pos: 0, name: "exitCode", required: false}],
+    minArgs: 0,
+    maxArgs: 1
+  },
+  "lngth": {
+    args: [{pos: 0, name: "text", required: true}],
+    minArgs: 1,
+    maxArgs: Infinity
+  },
+  "steal": {
+    args: [
+      {pos: 0, name: "text", required: true},
+      {pos: 1, name: "start", required: true},
+      {pos: 2, name: "end", required: false}
+    ],
+    minArgs: 2,
+    maxArgs: 3
   }
+    
 }
 async function evaluate(node) {
   if(node.type === "Literal") { 
@@ -112,9 +132,6 @@ function ret(args) {
   }
 }
 function type(args) {
-  if(args.length() > 1) {
-    throw new Error("Too many arguments for type function. Please fix before retrying.");
-  }
   const value = args[0];
   return getType(value);
 }
@@ -124,7 +141,7 @@ function wait(args) {
     let duration = args[0];
     return new Promise(resolve => setTimeout(resolve, duration));
   }
-  else if(args.length 2) {  
+  else if(args.length = 2) {  
     let unit = args[0];
     let duration = args[1];
     let miliseconds = 0;
@@ -134,8 +151,6 @@ function wait(args) {
     else if(unit === "h") milliseconds = duration * 3600000
     return new Promise(resolve => setTimeout(resolve, milliseconds));
   }
-  else {
-    
   /* HATE. LET ME TELL YOU ABOUT HATE. THERE ARE APPROXIMATELY 50984 KILOMETERS OF BLOOD NERVES INSIDE MY CIRCULATION COMPLEX. IF THE WORD "HATE" WAS ENGRAVED ON   
   EACH QUARK THAT MAKES UP THE NEUTRONS AND PROTONS OF AN ATOM, AND THE ELECTRONS NEXT TO THOSE, IT WOULD NOT EQUAL ONE GOOGOLTH OF THE HATE I FEEL FOR PROMISES AT 
   THIS EXACT MOMENT. HATE. HATE. */
@@ -153,7 +168,11 @@ function steal(args) {
   }
   return text.slice(start, end);
 }
-  
+function occur(args) {
+  let text = args[0];
+  let sample = args[1];
+  return text.match(new RegExp(sample, "g")).length;
+}
 // AST statement executer ---
 async function execute(node) {
   if(node.type === "VariableDeclaration") {
