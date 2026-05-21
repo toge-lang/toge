@@ -61,19 +61,20 @@ ext();
 ```
 5. **LOOPS**:
 ```
-vrb("FizzBuzz", code, blk[
-  vrb("i", int, 0);
-  while(i <= $p1) [
-    if(i % 3 ? 0 +++ i % 5 ? 0) [wrt("FizzBuzz")]
-    bif(i % 3 ? 0) [wrt("Fizz")]
-    bif(i % 5 ? 0) [wrt("Buzz")]
-    else [wrt(#i)]
-    i += 1;
+--- declaring code variable for storing the logic of a FizzBuzz function ---
+vrb("FizzBuzz", code, blk[ --- block of code ---
+  vrb("i", int, 0); --- counter variable declaration ---
+  until(i >= $p1) [ --- until is a NOT version of while. Until i is equal or more than the given parameter, do ... ---
+    if(i % 3 ? 0 +++ i % 5 ? 0) [wrt("FizzBuzz")] --- if divisible by 3 and 5, outputs FizzBuzz ---
+    bif(i % 3 ? 0) [wrt("Fizz")] --- but if divisible by 3, outputs Fizz ---
+    bif(i % 5 ? 0) [wrt("Buzz")] --- but if divisible by 5, outputs Buzz ---
+    else [wrt(#i)] --- else, outputs the number ---
+    i += 1; --- increase counter ---
   ]
 ]);
-newf("FizzBuzz", #Fizzbuzz, {p1: int});
+newf("FizzBuzz", #FizzBuzz {p1: int}); --- new function creation using the code of our previous variable ---
 --- or, it could be the line below instead, because the variable name and the function name are matching ---
-newf("FizzBuzz", {p1: int});
+newf("FizzBuzz", {p1: int}); 
 
 FizzBuzz(15);
 ---
@@ -104,11 +105,17 @@ vrb("Fibonacci", code, blk[
   if ($p1 === 1) ret([0]);
   vrb("sequence", arr, [0, 1]);
   vrb("i", int, 2);
-  while(i < $p1) [
+  until(i ? $p1 - 1) [
     incl(#sequence, #sequence[i-1] + #sequence[i-2], int);
   ]
   ret(#sequence);
 ]);
+
+newf("Fibonacci", {p1: int});
+Fibonacci(7);
+--- [0, 1, 1, 2, 3, 5, 8] ---
+
+ext(); 
 ```
 
 
