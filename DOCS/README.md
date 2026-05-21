@@ -43,9 +43,9 @@ wrt('Oh, it seems I accidentally took RAGATHA, and DROPPED her into the DEEPFRYE
 
 vrb("C", dint, 3.14); --- declares new variable named C and gives it the value 3.14, with dint being a decimal integer ---
 wrt("I love me some god ol' apple " + #C + "!"); --- sadly, the output is not apple pi, and instead just an error. ---
-wrt(#A + #C); --- 
+wrt(#A + #C); --- 77.14 ---
 
-ext()
+ext();
 ```
 4. **CONDITIONALS**:
 ```
@@ -75,7 +75,7 @@ newf("FizzBuzz", #Fizzbuzz, {p1: int});
 --- or, it could be the line below instead, because the variable name and the function name are matching ---
 newf("FizzBuzz", {p1: int});
 
-FizzBuzz(15)
+FizzBuzz(15);
 ---
 OUTPUT:
 0
@@ -94,6 +94,8 @@ Fizz
 13
 14
 FizzBuzz
+---
+ext();
 ```
 6. **ARRAYS**
 ```
