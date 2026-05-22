@@ -16,7 +16,7 @@ const singleCharTokens = {
 function isDigit(char) {return char >= '0' && char <= '9'};
 function isLetter(char) {return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')};
 function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
-function createToken(type, value, line, columm) {
+function createToken(type, value, line, column) {
   return {
     type: type,
     value: value,
@@ -29,18 +29,22 @@ console.log("Loading tokenize function...");
 function tokenize(source) { 
   let tokens = []; // tokens array
   let pos = 0; // source position(the (pos)th character of the source)
+  let line = 1;
+  let column = 1;
   while(pos < source.length) {
     const char = source[pos];
-    if(char
     switch(true) {
+      case char in singleCharTokens:
+        tokens.push(createToken(
       case char === ' ':
       case char === '\r':
       case char === '\n':
       case char === '\t':
         pos++;
+        if (char === '\n') {line++; column = 1};
         break;
       case isDigit(char): // integers and decimal integers token
-        let number = ``
+        let number = ``;
         const nextChar = source[pos+1];
         const start = pos;
         while(pos < source.length && isDigit(source[pos])) {number += source[pos]; pos++}
@@ -128,6 +132,7 @@ function tokenize(source) {
         throw new Error("A character isn't recognized, more specifically the '" + char + "' character, at position " + pos + ". Please fix it before retrying."); // error code 1
         break; 
     }
+  }
   tokens.push({type: "EOF", value: null}); // end token
   return tokens;
 }
