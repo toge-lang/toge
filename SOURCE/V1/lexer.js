@@ -1,17 +1,17 @@
 // ---------------------------------------------------------------------------- LEXER -----------------------------------7-------------------------------------------//
 const sCT = { // single character tokens
-  '(': {type: "LPAREN", value: '(', length: 1},
-  ')': {type: "RPAREN", value: ')', length: 1},
-  '[': {type: "LBRACKET", value: '[', length: 1},
-  ']': {type: "RBRACKET", value: ']', length: 1},
-  '{': {type: "LBRACE", value: '{', length: 1},
-  '}': {type: "RBRACE", value: '}', length: 1},
-  ',': {type: "COMMA", value: ',', length: 1},
-  ';': {type: "SEMICOLON", value: ';', length: 1},
-  ':': {type: "COLON", value: '?', length: 1},
-  '?': {type: "COND_EQ", value: '?', length: 1},
-  '=': {type: "EQ", value: '=', length: 1}
-};
+  '(': {type: "LPAREN", length: 1},
+  ')': {type: "RPAREN", length: 1},
+  '[': {type: "LBRACKET", length: 1},
+  ']': {type: "RBRACKET", length: 1},
+  '{': {type: "LBRACE", length: 1},
+  '}': {type: "RBRACE", length: 1},
+  ',': {type: "COMMA", length: 1},
+  ';': {type: "SEMICOLON", length: 1},
+  ':': {type: "COLON", length: 1},
+  '?': {type: "COND_EQ", length: 1},
+  '=': {type: "EQ", length: 1}
+}
 const mCT = { // multi character tokens
   '+': [{next: '++', type: 'AND_GATE', value: '+++', length: 3}, {next: '=', type: 'PLUS_EQ', value: '+=', length: 2}, {type: 'PLUS', value: '+', length: 1}],
   '-': [{next: '+-', type: 'NOT_GATE', value: '-+-', length: 3}, {next: '=', type: 'MINUS_EQ', value: '-=', length: 2}, {type: 'MINUS', value: '-', length: 1}],
@@ -45,39 +45,42 @@ function tokenize(source) {
   let pos = 0;
   let line = 1;
   let column = 1;
+  function move() {pos++;column++};
   while(pos < source.length) {
     const char = source[pos];
     switch(true) {
       case char in sCT:
-        let type = sCT[char];
+        let type = sCT[char.type];
         tokens.push(createToken(type, char, line, column));
         break;
-      case char in mCT:  
+      case char in mCT:
         // to do: do the logic for creating tokens in mCT, based on the next two tokens, and for each case assign one of the {next:...} properties and use createToken with the type and value. If none of them match, use the last property for the desired character. Except for |, if its just alone throw an error.
         break;
       case char === ' ':
       case char === '\r':
       case char === '\n':
       case char === '\t':
-        pos++;
+        move();
         if (char === '\n') {line++; column = 1};
         break;
       case char === '!':
-        if(char in nT) {
+        if(source[pos+1] in nT) {
           // to do: do the logic for creating tokens that are in nT and have their value be both the ! and the original token, with the token type being NOT_ + original token type, and the value just the priginal token with ! behind it.
         }
+        else {throw new Error("A lone ! is found at line " + line + ", column " + column + ". Please fix before retrying.")};
+        break;
       case isDigit(char):
         let number = ``;
         const nextChar = source[pos+1];
         const start = pos;
-        while(pos < source.length && isDigit(source[pos])) {number += source[pos]; pos++}
+        while(pos < source.length && isDigit(source[pos])) {number += source[pos]; move()};
         if(pos < source.length && source[pos] === '.') {
           number += '.';
-          pos++;
+          move();
           if(!(pos < source.length && isDigit(source[pos]))) {
             throw new Error("It seems at line " + line + ", column " + column + ", you added a non-number to a number, either that or an extra decimal point. Fix it before retrying!"); // error code 5
           }
-          while(pos < source.length && isDigit(source[pos])) {number += source[pos]; pos++}
+          while(pos < source.length && isDigit(source[pos])) {number += source[pos]; move()};
         }
         if (number.startsWith('0') && isDigit(nextChar)) {
           throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at line " + line + ", column " + column + ". Please fix before retrying.")};
@@ -87,29 +90,29 @@ function tokenize(source) {
       case char === "'":
         let string = ``;
         const start = pos;
-        pos++;
-        while(pos < source.length && source[pos] !== char) {string += source[pos]; pos++};
+        move();
+        while(pos < source.length && source[pos] !== char) {string += source[pos]; move()};
         if(pos >= source.length) {
           throw new Error("You forgot to close your text string starting at line " + line + ", column " + column + ". Please find and close it before retrying."); // error code 2
         }
         tokens.push({type: "TEXT", value: string});
-        pos++;
+        move();
         break;
       case char === '#': 
         let vrb = ``;
-        pos++;
-        while(pos < source.length && isAlphaNumeric(source[pos])) {vrb += source[pos]; pos++};
+        move();
+        while(pos < source.length && isAlphaNumeric(source[pos])) {vrb += source[pos]; move()};
         tokens.push({type: "VARIABLE", value: vrb});
         break;
       case char === '$': 
         let param = ``;
-        pos++;
-        while(pos < source.length && isAlphaNumeric(source[pos])) {param += source[pos]; pos++};
+        move();
+        while(pos < source.length && isAlphaNumeric(source[pos])) {param += source[pos]; move()};
         tokens.push({type: "PARAMETER", value: param});
         break;
       case isLetter(char):
         let identifier = ``;
-        while(pos < source.length && isAlphaNumeric(source[pos])) {identifier += source[pos]; pos++};
+        while(pos < source.length && isAlphaNumeric(source[pos])) {identifier += source[pos]; move()};
         tokens.push({type: "IDENTIFIER", value: identifier});
         break;
       default:
@@ -117,7 +120,7 @@ function tokenize(source) {
         break; 
     }
   }
-  tokens.push({type: "EOF", value: null});
+  tokens.push{createToken("EOF", null, line, column)};
   return tokens;
 }
 let tokens = tokenize(document.getElementById("codeArea").value);
