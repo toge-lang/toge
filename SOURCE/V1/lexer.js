@@ -52,7 +52,7 @@ function tokenize(source) {
         let type = sCT[char];
         tokens.push(createToken(type, char, line, column));
         break;
-      case char in mCT:
+      case char in mCT:  
         // to do: do the logic for creating tokens in mCT, based on the next two tokens, and for each case assign one of the {next:...} properties and use createToken with the type and value. If none of them match, use the last property for the desired character. Except for |, if its just alone throw an error.
         break;
       case char === ' ':
@@ -66,7 +66,7 @@ function tokenize(source) {
         if(char in nT) {
           // to do: do the logic for creating tokens that are in nT and have their value be both the ! and the original token, with the token type being NOT_ + original token type, and the value just the priginal token with ! behind it.
         }
-      case isDigit(char): // integers and decimal integers token
+      case isDigit(char):
         let number = ``;
         const nextChar = source[pos+1];
         const start = pos;
@@ -75,49 +75,49 @@ function tokenize(source) {
           number += '.';
           pos++;
           if(!(pos < source.length && isDigit(source[pos]))) {
-            throw new Error("It seems at position " + pos + ", you added a non-number to a number, either that or an extra decimal point. Fix it before retrying!"); // error code 5
+            throw new Error("It seems at line " + line + ", column " + column + ", you added a non-number to a number, either that or an extra decimal point. Fix it before retrying!"); // error code 5
           }
           while(pos < source.length && isDigit(source[pos])) {number += source[pos]; pos++}
         }
         if (number.startsWith('0') && isDigit(nextChar)) {
-          throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at position " + start + ". Please fix before retrying.")};
+          throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at line " + line + ", column " + column + ". Please fix before retrying.")};
         tokens.push({ type: "NUMBER", value: number });
         break;
       case char === '"':
-      case char === "'": // double quote and single quote text strings token
+      case char === "'":
         let string = ``;
         const start = pos;
         pos++;
         while(pos < source.length && source[pos] !== char) {string += source[pos]; pos++};
         if(pos >= source.length) {
-          throw new Error("You forgot to close your text string starting at position " + start + ". Please find and close it before retrying."); // error code 2
+          throw new Error("You forgot to close your text string starting at line " + line + ", column " + column + ". Please find and close it before retrying."); // error code 2
         }
         tokens.push({type: "TEXT", value: string});
         pos++;
         break;
-      case char === '#': // variable reference token
+      case char === '#': 
         let vrb = ``;
         pos++;
         while(pos < source.length && isAlphaNumeric(source[pos])) {vrb += source[pos]; pos++};
         tokens.push({type: "VARIABLE", value: vrb});
         break;
-      case char === '$': // parameter reference token
+      case char === '$': 
         let param = ``;
         pos++;
         while(pos < source.length && isAlphaNumeric(source[pos])) {param += source[pos]; pos++};
         tokens.push({type: "PARAMETER", value: param});
         break;
-      case isLetter(char):// identifier token
+      case isLetter(char):
         let identifier = ``;
         while(pos < source.length && isAlphaNumeric(source[pos])) {identifier += source[pos]; pos++};
         tokens.push({type: "IDENTIFIER", value: identifier});
         break;
       default:
-        throw new Error("A character isn't recognized, more specifically the '" + char + "' character, at position " + pos + ". Please fix it before retrying."); // error code 1
+        throw new Error("A character isn't recognized, more specifically the '" + char + "' character, at line " + line + ", column " + column + ". Please fix it before retrying."); // error code 1
         break; 
     }
   }
-  tokens.push({type: "EOF", value: null}); // end token
+  tokens.push({type: "EOF", value: null});
   return tokens;
 }
 let tokens = tokenize(document.getElementById("codeArea").value);
