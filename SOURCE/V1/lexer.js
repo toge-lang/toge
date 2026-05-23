@@ -1,45 +1,32 @@
 // ---------------------------------------------------------------------------- LEXER ------------------------------------------------------------------------------//
 console.log("Loading necessary functions...");
 const sCT = {
-  '(': "LPAREN",
-  ')': "RPAREN",
-  '[': "LBRACK",
-  ']': "RBRACK",
-  '{': "LBRACE",
-  '}': "RBRACE",
-  ',': "COMMA",
-  ';': "SEMICOLON",
-  ':': "COLON",
-  '?': "COND_EQ",
-  '=': "EQ"
+  '(': {type: "LPAREN", value: '(', length: 1},
+  ')': {type: "RPAREN", value: ')', length: 1},
+  '[': {type: "LBRACKET", value: '[', length: 1},
+  ']': {type: "RBRACKET", value: ']', length: 1},
+  '{': {type: "LBRACE", value: '{', length: 1},
+  '}': {type: "RBRACE", value: '}', length: 1},
+  ',': {type: "COMMA", value: ',', length: 1},
+  ';': {type: "SEMICOLON", value: ';', length: 1},
+  ':': {type: "COLON", value: '?', length: 1},
+  '?': {type: "COND_EQ", value: '?', length: 1},
+  '=': {type: "EQ", value: '=', length: 1}
 };
-const multiCharOperators = {
-  '+': [
-    { next: '++', type: 'AND_GATE', value: '+++', length: 3 },
-    { next: '=', type: 'PLUS_EQ', value: '+=', length: 2 },
-    { type: 'PLUS', value: '+', length: 1 }
-  ],
-  '-': [
-    {next: '+-', type: 'NOT_GATE', value: '-+-', length: 3},
-    {next: '=', type: 'MINUS_EQ', value: '-=', length: 2},
-    {type: 'MINUS', value: '-', length: 1}
-  ],
-  '*': [
-    {next: '=', type: "TIMES_EQ", value: '*=', length : 2},
-    {type: 'TIMES', value: '*', length: 1}
-  ],
-  '/': [
-    {next: '=', type: "DIVIDERS_EQ", value: '/=', length : 2},
-    {type: 'DIVIDE_RS', value: '/', length: 1}
-  ],
-  '%': [
-    {next: '=', type: "DIVIDERM_EQ", value: '%=', length : 2},
-    {type: 'DIVIDE_RM', value: '%', length: 1}
-  ],
-  '^': [
-    {next: '=', type: "POWER_EQ", value: '^=', length : 2},
-    {type: 'POWER', value: '^', length: 1}
-  ]
+const mCT = {
+  '+': [{next: '++', type: 'AND_GATE', value: '+++', length: 3}, {next: '=', type: 'PLUS_EQ', value: '+=', length: 2}, {type: 'PLUS', value: '+', length: 1}],
+  '-': [{next: '+-', type: 'NOT_GATE', value: '-+-', length: 3}, {next: '=', type: 'MINUS_EQ', value: '-=', length: 2}, {type: 'MINUS', value: '-', length: 1}],
+  '*': [{next: '=', type: "TIMES_EQ", value: '*=', length : 2}, {type: 'TIMES', value: '*', length: 1}],
+  '/': [{next: '=', type: "DIVIDERS_EQ", value: '/=', length : 2}, {type: 'DIVIDE_RS', value: '/', length: 1}],
+  '%': [{next: '=', type: "DIVIDERM_EQ", value: '%=', length : 2}, {type: 'DIVIDE_RM', value: '%', length: 1}],
+  '^': [{next: '=', type: "POWER_EQ", value: '^=', length : 2}, {type: 'POWER', value: '^', length: 1}],
+  '>': [{next: '=', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
+  '<': [{next: '=', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}]
+}
+const compTokens = {
+  '>': [{next: '=', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
+  '<': [{next: '=', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
+  '?': [{type: "COND_EQ", value: '?', length: 1}]
 }
 function isDigit(char) {return char >= '0' && char <= '9'};
 function isLetter(char) {return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')};
