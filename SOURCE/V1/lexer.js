@@ -49,7 +49,7 @@ function tokenize(source) {
     const char = source[pos];
     switch(true) {
       case char in sCT:
-        let type = sCT[char.type];
+        let type = sCT[char].type;
         tokens.push(createToken(type, char, line, column));
         break;
       case char in mCT:
@@ -62,7 +62,7 @@ function tokenize(source) {
           if(option.next) {
             const nextChars = source.substring(pos + 1, pos + 1 + option.next.length);
             if(nextChars !== option.next) {
-            shouldMatch = false;
+              shouldMatch = false;
             }
           }
           if(shouldMatch) {
@@ -79,12 +79,12 @@ function tokenize(source) {
       case char === '\r':
       case char === '\n':
       case char === '\t':
-        move();
         if (char === '\n') {line++; column = 1};
+        move();
         break;
       case char === '!':
          if(source[pos+1] in nT) {
-           const options = mCT[char];
+           const options = nT[char];
            let matched = false;
            let i = 0;
            while(i < options.length && !matched) {
@@ -94,8 +94,8 @@ function tokenize(source) {
                const nextChars = source.substring(pos + 1, pos + 1 + option.next.length);
                if(nextChars !== option.next) {
                  shouldMatch = false;
-              }
-            }    
+               }
+             }    
              if(shouldMatch) {
                tokens.push(createToken("NOT_" + option.type, '!' + option.value, line, column));
                move(option.length);
@@ -123,7 +123,7 @@ function tokenize(source) {
         if (number.startsWith('0') && isDigit(nextChar)) {
           throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at line " + line + ", column " + column + ". Please fix before retrying.");
         }
-        tokens.push{createToken("NUMBER", number, line, column)};
+        tokens.push(createToken("NUMBER", number, line, column));
         break;
       case char === '"':
       case char === "'":
@@ -134,32 +134,32 @@ function tokenize(source) {
         if(pos >= source.length) {
           throw new Error("You forgot to close your text string starting at line " + line + ", column " + column + ". Please find and close it before retrying."); // error code 2
         }
-        tokens.push{createToken("TEXT", string, line, column)};
+        tokens.push(createToken("TEXT", string, line, column));
         move();
         break;
       case char === '#': 
         let vrb = ``;
         move();
         while(pos < source.length && isAlphaNumeric(source[pos])) {vrb += source[pos]; move()};
-        tokens.push{createToken("VARIABLE", vrb, line, column};
+        tokens.push(createToken("VARIABLE", vrb, line, column));
         break;
       case char === '$': 
         let param = ``;
         move();
         while(pos < source.length && isAlphaNumeric(source[pos])) {param += source[pos]; move()};
-        tokens.push{createToken("PARAMETER", param, line, column};
+        tokens.push(createToken("PARAMETER", param, line, column));
         break;
       case isLetter(char):
         let identifier = ``;
         while(pos < source.length && isAlphaNumeric(source[pos])) {identifier += source[pos]; move()};
-        tokens.push{createToken("IDENTIFIER", identifier, line, column};
+        tokens.push(createToken("IDENTIFIER", identifier, line, column));
         break;
       default:
         throw new Error("A character isn't recognized, more specifically the '" + char + "' character, at line " + line + ", column " + column + ". Please fix it before retrying."); // error code 1
         break; 
     }
   }
-  tokens.push{createToken("EOF", null, line, column)};
+  tokens.push(createToken("EOF", null, line, column));
   return tokens;
 }
 let tokens = tokenize(document.getElementById("codeArea").value);
