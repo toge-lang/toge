@@ -54,6 +54,7 @@ function tokenize(source) {
         break;
       case char in mCT:
         // to do: do the logic for creating tokens in mCT, based on the next two tokens, and for each case assign one of the {next:...} properties and use createToken with the type and value. If none of them match, use the last property for the desired character. Except for |, if its just alone throw an error.
+        break;
       case char === ' ':
       case char === '\r':
       case char === '\n':
