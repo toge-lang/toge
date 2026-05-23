@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------------------- LEXER -----------------------------------7-------------------------------------------//
+// ---------------------------------------------------------------------------- LEXER ------------------------------------------------------------------------------//
 const sCT = { // single character tokens
   '(': {type: "LPAREN", length: 1},
   ')': {type: "RPAREN", length: 1},
@@ -41,18 +41,18 @@ function createToken(type, value, line, column) { // token creator
 }
 function tokenize(source) { 
   let tokens = []; 
-  let pos = 0;
-  let line = 1;
+  let pos = 0; // N-th character of source
+  let line = 1; 
   let column = 1;
   function move(n = 1) {pos += n;column += n};
-  while(pos < source.length) {
+  while(pos < source.length) { // until the end of the file is reached...
     const char = source[pos];
     switch(true) {
-      case char in sCT:
+      case char in sCT: // check if a single character token
         let type = sCT[char].type;
         tokens.push(createToken(type, char, line, column));
         break;
-      case char in mCT:
+      case char in mCT: // check if a multi character token with multiple possibiligies
         const options = mCT[char];
         let matched = false;
         let i = 0;
@@ -74,17 +74,17 @@ function tokenize(source) {
         if(!matched && char === '|') {
           throw new Error("A lone | is found at line " + line + ", column " + column + ". Please fix before retrying.");
         }
-        break;
-      case char === ' ':
-      case char === '\r':
-      case char === '\n':
-      case char === '\t':
+        break;             
+      case char === ' ':    //\whi     
+      case char === '\r':  //  \te
+      case char === '\n': //    \sp 
+      case char === '\t'://      \ace
         if (char === '\n') {line++; column = 1};
         move();
         break;
-      case char === '!':
+      case char === '!': // mCT check but with some extra stuff and only nT characters
          if(source[pos+1] in nT) {
-           const options = nT[char];
+           const options = nT[source[pos+1];
            let matched = false;
            let i = 0;
            while(i < options.length && !matched) {
@@ -98,7 +98,7 @@ function tokenize(source) {
              }    
              if(shouldMatch) {
                tokens.push(createToken("NOT_" + option.type, '!' + option.value, line, column));
-               move(option.length);
+               move(option.length + 1);
                matched = true;
             }
              i++;
