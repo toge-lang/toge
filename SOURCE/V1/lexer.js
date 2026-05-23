@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------------------- LEXER ------------------------------------------------------------------------------//
+// ---------------------------------------------------------------------------- LEXER -----------------------------------7-------------------------------------------//
 console.log("Loading necessary functions...");
-const sCT = {
+const sCT = { // single character tokens
   '(': {type: "LPAREN", value: '(', length: 1},
   ')': {type: "RPAREN", value: ')', length: 1},
   '[': {type: "LBRACKET", value: '[', length: 1},
@@ -13,7 +13,7 @@ const sCT = {
   '?': {type: "COND_EQ", value: '?', length: 1},
   '=': {type: "EQ", value: '=', length: 1}
 };
-const mCT = {
+const mCT = { // multi character tokens
   '+': [{next: '++', type: 'AND_GATE', value: '+++', length: 3}, {next: '=', type: 'PLUS_EQ', value: '+=', length: 2}, {type: 'PLUS', value: '+', length: 1}],
   '-': [{next: '+-', type: 'NOT_GATE', value: '-+-', length: 3}, {next: '=', type: 'MINUS_EQ', value: '-=', length: 2}, {type: 'MINUS', value: '-', length: 1}],
   '*': [{next: '=', type: "TIMES_EQ", value: '*=', length : 2}, {type: 'TIMES', value: '*', length: 1}],
@@ -23,7 +23,7 @@ const mCT = {
   '>': [{next: '=', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
   '<': [{next: '=', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}]
 }
-const compTokens = {
+const nT = { // negatable tokens(ones where you can add a ! before them and they are still valid)
   '>': [{next: '=', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
   '<': [{next: '=', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
   '?': [{type: "COND_EQ", value: '?', length: 1}]
