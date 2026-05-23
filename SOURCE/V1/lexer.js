@@ -27,12 +27,11 @@ const nT = { // negatable tokens(ones where you can add a ! before them and they
   '>': [{next: '=', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
   '<': [{next: '=', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
   '?': [{type: "COND_EQ", value: '?', length: 1}]
-  // to do: add rest of tokens
 }
-function isDigit(char) {return char >= '0' && char <= '9'};
-function isLetter(char) {return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')};
-function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
-function createToken(type, value, line, column) {
+function isDigit(char) {return char >= '0' && char <= '9'}; // digit checker
+function isLetter(char) {return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')}; // letter checker
+function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)}; // letter OR digit checker
+function createToken(type, value, line, column) { // token creator
   return {
     type: type,
     value: value,
@@ -45,7 +44,7 @@ function tokenize(source) {
   let pos = 0;
   let line = 1;
   let column = 1;
-  function move() {pos++;column++};
+  function move(n = 1) {pos += n;column += n};
   while(pos < source.length) {
     const char = source[pos];
     switch(true) {
@@ -54,7 +53,27 @@ function tokenize(source) {
         tokens.push(createToken(type, char, line, column));
         break;
       case char in mCT:
-        // to do: do the logic for creating tokens in mCT, based on the next two tokens, and for each case assign one of the {next:...} properties and use createToken with the type and value. If none of them match, use the last property for the desired character. Except for |, if its just alone throw an error.
+        const options = mCT[char];
+        let matched = false;
+        let i = 0;
+        while(i < options.length && !matched) {
+          const option = options[i];
+          let shouldMatch = true;
+          if(option.next) {
+            const nextChars = source.substring(pos + 1, pos + 1 + option.next.length);
+            if(nextChars !== option.next) {
+            shouldMatch = false;
+            }
+          }
+          if(shouldMatch) {
+            tokens.push(createToken(option.type, option.value, line, column));
+            move(option.length);
+            matched = true;
+          }   
+        }
+        if(!matched && char === '|') {
+          throw new Error("A lone | is found at line " + line + ", column " + column + ". Please fix before retrying.");
+        }
         break;
       case char === ' ':
       case char === '\r':
@@ -64,8 +83,27 @@ function tokenize(source) {
         if (char === '\n') {line++; column = 1};
         break;
       case char === '!':
-        if(source[pos+1] in nT) {
-          // to do: do the logic for creating tokens that are in nT and have their value be both the ! and the original token, with the token type being NOT_ + original token type, and the value just the priginal token with ! behind it.
+         if(source[pos+1] in nT) {
+           const options = mCT[char];
+           let matched = false;
+           let i = 0;
+           while(i < options.length && !matched) {
+             const option = options[i];
+             let shouldMatch = true;
+             if(option.next) {
+               const nextChars = source.substring(pos + 1, pos + 1 + option.next.length);
+               if(nextChars !== option.next) {
+                 shouldMatch = false;
+              }
+            }    
+             if(shouldMatch) {
+               tokens.push(createToken("NOT_" + option.type, '!' + option.value, line, column));
+               move(option.length);
+               matched = true;
+            }
+             i++;
+           }
+         break;
         }
         else {throw new Error("A lone ! is found at line " + line + ", column " + column + ". Please fix before retrying.")};
         break;
@@ -78,13 +116,14 @@ function tokenize(source) {
           number += '.';
           move();
           if(!(pos < source.length && isDigit(source[pos]))) {
-            throw new Error("It seems at line " + line + ", column " + column + ", you added a non-number to a number, either that or an extra decimal point. Fix it before retrying!"); // error code 5
+            throw new Error("It seems at line " + line + ", column " + column + ", you added a non-number to a number, either that or an extra decimal point. Please fix before retrying."); // error code 5
           }
           while(pos < source.length && isDigit(source[pos])) {number += source[pos]; move()};
         }
         if (number.startsWith('0') && isDigit(nextChar)) {
-          throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at line " + line + ", column " + column + ". Please fix before retrying.")};
-        tokens.push({ type: "NUMBER", value: number });
+          throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at line " + line + ", column " + column + ". Please fix before retrying.");
+        }
+        tokens.push{createToken("NUMBER", number, line, column)};
         break;
       case char === '"':
       case char === "'":
@@ -95,25 +134,25 @@ function tokenize(source) {
         if(pos >= source.length) {
           throw new Error("You forgot to close your text string starting at line " + line + ", column " + column + ". Please find and close it before retrying."); // error code 2
         }
-        tokens.push({type: "TEXT", value: string});
+        tokens.push{createToken("TEXT", string, line, column)};
         move();
         break;
       case char === '#': 
         let vrb = ``;
         move();
         while(pos < source.length && isAlphaNumeric(source[pos])) {vrb += source[pos]; move()};
-        tokens.push({type: "VARIABLE", value: vrb});
+        tokens.push{createToken("VARIABLE", vrb, line, column};
         break;
       case char === '$': 
         let param = ``;
         move();
         while(pos < source.length && isAlphaNumeric(source[pos])) {param += source[pos]; move()};
-        tokens.push({type: "PARAMETER", value: param});
+        tokens.push{createToken("PARAMETER", param, line, column};
         break;
       case isLetter(char):
         let identifier = ``;
         while(pos < source.length && isAlphaNumeric(source[pos])) {identifier += source[pos]; move()};
-        tokens.push({type: "IDENTIFIER", value: identifier});
+        tokens.push{createToken("IDENTIFIER", identifier, line, column};
         break;
       default:
         throw new Error("A character isn't recognized, more specifically the '" + char + "' character, at line " + line + ", column " + column + ". Please fix it before retrying."); // error code 1
