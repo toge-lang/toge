@@ -1,18 +1,46 @@
 // ---------------------------------------------------------------------------- LEXER ------------------------------------------------------------------------------//
 console.log("Loading necessary functions...");
-const singleCharTokens = {
-  '(': 'LPAREN',
-  ')': 'RPAREN',
-  '[': 'LBRACK',
-  ']': 'RBRACK',
-  '{': 'LBRACE',
-  '}': 'RBRACE',
-  ',': 'COMMA',
-  ';': 'SEMICOLON',
-  ':': 'COLON',
-  '?': 'COND_EQ',
-  '=': 'EQ'
+const sCT = {
+  '(': "LPAREN",
+  ')': "RPAREN",
+  '[': "LBRACK",
+  ']': "RBRACK",
+  '{': "LBRACE",
+  '}': "RBRACE",
+  ',': "COMMA",
+  ';': "SEMICOLON",
+  ':': "COLON",
+  '?': "COND_EQ",
+  '=': "EQ"
 };
+const multiCharOperators = {
+  '+': [
+    { next: '++', type: 'AND_GATE', value: '+++', length: 3 },
+    { next: '=', type: 'PLUS_EQ', value: '+=', length: 2 },
+    { type: 'PLUS', value: '+', length: 1 }
+  ],
+  '-': [
+    {next: '+-', type: 'NOT_GATE', value: '-+-', length: 3},
+    {next: '=', type: 'MINUS_EQ', value: '-=', length: 2},
+    {type: 'MINUS', value: '-', length: 1}
+  ],
+  '*': [
+    {next: '=', type: "TIMES_EQ", value: '*=', length : 2},
+    {type: 'TIMES', value: '*', length: 1}
+  ],
+  '/': [
+    {next: '=', type: "DIVIDERS_EQ", value: '/=', length : 2},
+    {type: 'DIVIDE_RS', value: '/', length: 1}
+  ],
+  '%': [
+    {next: '=', type: "DIVIDERM_EQ", value: '%=', length : 2},
+    {type: 'DIVIDE_RM', value: '%', length: 1}
+  ],
+  '^': [
+    {next: '=', type: "POWER_EQ", value: '^=', length : 2},
+    {type: 'POWER', value: '^', length: 1}
+  ]
+}
 function isDigit(char) {return char >= '0' && char <= '9'};
 function isLetter(char) {return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')};
 function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)};
@@ -27,15 +55,17 @@ function createToken(type, value, line, column) {
 console.log("Functions loaded!");
 console.log("Loading tokenize function...");
 function tokenize(source) { 
-  let tokens = []; // tokens array
-  let pos = 0; // source position(the (pos)th character of the source)
+  let tokens = []; 
+  let pos = 0;
   let line = 1;
   let column = 1;
   while(pos < source.length) {
     const char = source[pos];
     switch(true) {
-      case char in singleCharTokens:
-        tokens.push(createToken(
+      case char in sCT:
+        let type = sCT[char];
+        tokens.push(createToken(type, char, line, column));
+        break;
       case char === ' ':
       case char === '\r':
       case char === '\n':
@@ -43,6 +73,8 @@ function tokenize(source) {
         pos++;
         if (char === '\n') {line++; column = 1};
         break;
+      case char === '!':
+        if(char 
       case isDigit(char): // integers and decimal integers token
         let number = ``;
         const nextChar = source[pos+1];
