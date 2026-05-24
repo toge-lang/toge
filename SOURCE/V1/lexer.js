@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------------------- LEXER ------------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------------------------------------- LEXER ----------------------------------------------------------------------------------------------------------------//
 const sCT = { // single character tokens
   '(': {type: "LPAREN", length: 1},
   ')': {type: "RPAREN", length: 1},
@@ -19,13 +19,13 @@ const mCT = { // multi character tokens
   '/': [{next: '=', type: "DIVIDERS_EQ", value: '/=', length : 2}, {type: 'DIVIDE_RS', value: '/', length: 1}],
   '%': [{next: '=', type: "DIVIDERM_EQ", value: '%=', length : 2}, {type: 'DIVIDE_RM', value: '%', length: 1}],
   '^': [{next: '=', type: "POWER_EQ", value: '^=', length : 2}, {type: 'POWER', value: '^', length: 1}],
-  '>': [{next: '=', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
-  '<': [{next: '=', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
+  '>': [{next: '?', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
+  '<': [{next: '?', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
   '|': [{next: '+|', type: "OR_GATE", value: '|+|', length : 3}, {next: '-|', type: "XOR_GATE", value: '|-|', length: 3}]
 }
 const nT = { // negatable tokens(ones where you can add a ! before them and they are still valid)
-  '>': [{next: '=', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
-  '<': [{next: '=', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
+  '>': [{next: '?', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
+  '<': [{next: '?', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
   '?': [{type: "COND_EQ", value: '?', length: 1}]
 }
 const cTT = { // collecting-type tokens(value as a variable that keeps collecting until a certain point)
@@ -153,8 +153,8 @@ function tokenize(source) {
         break; 
     }
   }
-  tokens.push(createToken("EOF", null, line, column));
-  return tokens;
+  tokens.push(createToken("EOF", null, line, column)); // end of file reached, tokenization done
+  return tokens; // return everything
 }
-let tokens = tokenize(document.getElementById("codeArea").value);
-// -------------------------------------------------------------------------- LEXER END ------------------------------------------------------------------------------//
+module.exports = {tokenize}; //something something node.js something
+// ------------------------------------------------------------------------------------------------------------------ LEXER END -----------------------------------------------------------------------------------------------------//
