@@ -92,9 +92,8 @@ function tokenize(source) {
         let val = ``; 
         move();
         if(char === '$' || char === '#') {while(pos < source.length && isAlphaNumeric(source[pos])) {val += source[pos]; move()}};
-        else {while(pos < source.length && (char !== '"' || char !== "'")) {val += source[pos]; move()}};
+        else {while(pos < source.length && source[pos] !== char) {val += source[pos]; move()}};
         tokens.push(createToken(cTT[char].type, val, line, column));
-        if(char === '"' || char === "'") {move()};
         break;
       //---\\ 
       case char === '!': // mCT check but with some extra stuff and only nT characters
