@@ -29,10 +29,7 @@ const nT = { // negatable tokens(ones where you can add a ! before them and they
   '?': [{type: "COND_EQ", value: '?', length: 1}]
 }
 const cTT = { // collecting-type tokens(value as a variable that keeps collecting until a certain point)
-  '$': [{type: "PARAMETER"}],
-  '#': [{type: "VARIABLE"}],
-  '"': [{type: "TEXT"}],
-  "'": [{type: "TEXT"}]
+  '$': [{type: "PARAMETER"}], '#': [{type: "VARIABLE"}], '"': [{type: "TEXT"}], "'": [{type: "TEXT"}]
 }
 const whitespace = [' ', '\n', '\r', '\t'];
 function isDigit(char) {return char >= '0' && char <= '9'}; // digit checker
@@ -143,19 +140,6 @@ function tokenize(source) {
           throw new Error("An invalid number has been found. Numbers starting with zero and not followed by a dot are invalid. The number is found starting at line " + line + ", column " + column + ". Please fix before retrying.");
         }
         tokens.push(createToken("NUMBER", number, line, column)); // ...and pushes the token with the value being said variable.
-        break;
-      //---\\
-      case char === '"':
-      case char === "'":
-        let string = ``; // creates a variable...
-        const start = pos;
-        move(); // ...moves past initial quote...
-        while(pos < source.length && source[pos] !== char) {string += source[pos]; move()}; //...and collects until a certain condition...
-        if(pos >= source.length) {
-          throw new Error("You forgot to close your text string starting at line " + line + ", column " + column + ". Please find and close it before retrying."); // error code 2
-        }
-        tokens.push(createToken("TEXT", string, line, column)); // ...and pushes the token with said variablr being the value.
-        move();
         break;
       //---\\
       case isLetter(char):
