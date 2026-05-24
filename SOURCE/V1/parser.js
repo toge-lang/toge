@@ -28,106 +28,22 @@ function eat(expectedType) {
     throw new Error("At token " + current + ", the " + expectedType + " token was expected, but it was replaced by " + token.type + " ('" + token.value + "'). Please replace it with the correct type before trying again."); // error code 6
   }
 }
-function parseExpression() {return parseLogicalOR()};
-function parseLogicalOR() {
-  let left = parseLogicalXOR(); 
-  while(peek().type === "OR_GATE") {
-    const operator = eat("OR_GATE").value;
-    const right = parseLogicalXOR();
-    left = {
-      type: "BinaryOperation",
-      operator: operator,
-      left: left,
-      right: right
-    }
-  }  
-  return left;
-}
-function parseLogicalXOR() {
-  let left = parseLogicalAND(); 
-  while(peek().type === "XOR_GATE") {
-    const operator = eat("XOR_GATE").value;
-    const right = parseLogicalAND();
-    left = {
-      type: "BinaryOperation",
-      operator: operator,
-      left: left,
-      right: right
-    }
-  }
-  return left;
-}
-function parseLogicalAND() {
-  let left = parseComparison();  
-  while(peek().type === "AND_GATE") {
-    const operator = eat("AND_GATE").value;
-    const right = parseComparison();
-    left = {
-      type: "BinaryOperation",
-      operator: operator,
-      left: left,
-      right: right
-    }
-  }  
-  return left;
-}
-
-function parseComparison() {
-  let left = parseAS();
-  if(peek().type === "COND_EQ" || peek().type === "COND_STRICT_EQ" || peek().type === "EQ" || peek().type === "STRICT_EQ") {
+function binaryOp(lowerLevel, operatorTypes) {
+  let left = lowerLevel();
+  while(operatorTypes.includes(peek().type)) {
     const operator = eat(peek().type).value;
-    const right = parseAS();
-    left = {
-      type: "BinaryOperation",
-      operator: operator,
-      left: left,
-      right: right
-    }
-  } 
-  return left;
-}
-function parseAS() {
-  let left = parseMD(); 
-  while(peek().type === "PLUS" || peek().type === "MINUS") {
-    const operator = eat(peek().type).value;
-    const right = parseMD();
-    left = {
-      type: "BinaryOperation",
-      operator: operator,
-      left: left,
-      right: right
-    }
+    const right = lowerLevel();
+    left = {type: "BinaryOperation", operator, left, right};
   }
   return left;
 }
-function parseMD() {
-  let left = parsePW();
-  while(peek().type === "TIMES" || peek().type === "DIVIDE_RS" || peek().type === "DIVIDE_RM") {
-    const operator = eat(peek().type).value;
-    const right = parsePW();
-    left = {
-      type: "BinaryOperation",
-      operator: operator,
-      left: left,
-      right: right
-    }
-  }
-  return left;
-}
-function parsePW() {
-  let left = parseArgument();
-  while(peek().type === "POWER") {
-    const operator = eat("POWER").value;
-    const right = parseArgument();
-    left = {
-      type: "BinaryOperation",
-      operator: operator,
-      left: left,
-      right: right
-    }
-  }
-  return left;
-}
+function parseLogicalOR() {return binaryOp(parseLogicalXOR, ["OR_GATE"])};
+function parseLogicalXOR() {return binaryOp(parseLogicalAND, ["XOR_GATE"])};
+function parseLogicalAND() {return binaryOp(parseComparison, ["AND_GATE"])};
+function parseComparison() {return binaryOp(parseAS, ["COND_EQ", "SMALLER_EQ", "BIGGER_EQ", "NOT_COND_EQ", "NOT_SMALLER_EQ", "NOT_BIGGER_EQ", "BIGGER", "SMALLER", "NOT_BIGGER", "NOT_SMALLER"])};
+function parseAS() {return binaryOp(parseMD, ["PLUS", "MINUS"])};
+function parseMD() {return binaryOp(parsePW, ["TIMES", "DIVIDE_RS", "DIVIDE_RM"])};
+function parsePW() {return binaryOp(parseArgument, ["POWER"])};
 function parseArgument() {
   if(peek().type === "NUMBER") {
     const token = eat("NUMBER");
