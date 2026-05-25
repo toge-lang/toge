@@ -45,48 +45,50 @@ function parseAS() {return binaryOp(parseMD, ["PLUS", "MINUS"])};
 function parseMD() {return binaryOp(parsePW, ["TIMES", "DIVIDE_RS", "DIVIDE_RM"])};
 function parsePW() {return binaryOp(parseArgument, ["POWER"])};
 function parseArgument() {
-  if(peek().type === "NUMBER") {
-    const token = eat("NUMBER");
-    return {
-      type: "Literal",
-      valueType: "number",
-      value: token.value
-    };
-  }
-  else if(peek().type === "TEXT") {
-    const token = eat("TEXT");
-    return {
-      type: "Literal",
-      valueType: "text",
-      value: token.value
-    }
-  }
-  else if(peek().type === "VARIABLE") {
-    const token = eat("VARIABLE");
-    return {
-      type: "VariableReference",
-      name: token.value
-    }
-  }
-  else if(peek().type === "IDENTIFIER" && peekAhead().type !== "LPAREN") {
-    const token = eat("IDENTIFIER");
-    return {
-      type: "Identifier",
-      name: token.value
-    }
-  }
-  else if(peek().type === "IDENTIFIER" && peekAhead().type === "LPAREN") {
-    return parseFunctionCall();
-  }
-  else if(peek().type === "PARAMETER") {
-    const token = eat("PARAMETER");
-    return {
-      type: "ParameterReference",
-      name: token.value
-    }
-  }
-  else {
-    throw new Error("Invalid argument at token " + current + ". It is an unrecognized character that has been used as an argument. Please fix before retrying.") // error code 7
+  switch(peek().type) {
+    case "NUMBER":
+      const token = eat("NUMBER");
+      return {
+        type: "Literal",
+        valueType: "number",
+        value: token.value
+      }
+      break;
+    case "TEXT":
+      const token = eat("TEXT");
+      return {
+        type: "Literal",
+        valueType: "text",
+        value: token.value
+      }
+      break;
+    case "VARIABLE":
+      const token = eat("VARIABLE");
+      return {
+        type: "VariableReference",
+        name: token.value
+      }
+      break;
+    case "IDENTIFIER":
+      if (peekAhead().type !== "LPAREN") {
+        const token = eat("IDENTIFIER");
+        return {
+          type: "Identifier",
+          name: token.value
+        }
+      }
+      else {return parseFunctionCall()};
+      break;
+    case "PARAMETER":
+      const token = eat("PARAMETER");
+      return {
+        type: "ParameterReference",
+        name: token.value
+      }
+      break;
+    default:
+      throw new Error("Invalid argument at token " + current + ". It is an unrecognized character that has been used as an argument. Please fix before retrying.") // error code 7
+      break;
   }
 }
 function parseFunctionCall() {
@@ -127,25 +129,27 @@ function parseVrb() {
 }
 function parseStatement() {
   if(peek().type === "IDENTIFIER") {
-    if(peek().value === "vrb") {
-      return parseVrb();
-    }
-    else if(peek().value === "if") {
-      return parseIf();
-    }
-    else if(peek().value === "until") {
-      return parseUntil();
-    }
-    else if(peek().value === "for") {
-      return parseFor();
-    }
-    else if(peek().value === "newf") {
-      return parseNewf();
-    }
-    else {
-      const node = parseFunctionCall();
-      eat("SEMICOLON");
-      return node;
+    switch(peek().value) {
+      case "vrb":
+        return parseVrb();
+        break
+      case "if":
+        return parseIf();
+        break;
+      case "until":
+        return parseUntil();
+        break;
+      case "for":
+        return parseFor();
+        break;
+      case "newf":
+        return parseNewf();
+        break;       
+      default:
+        const node = parseFunctionCall();
+        eat("SEMICOLON");
+        return node;
+        break;
     }
   }
   else {
