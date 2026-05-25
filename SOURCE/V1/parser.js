@@ -14,7 +14,7 @@ function peekAhead() {
   return tokens[current+1];
 }
 function peekBehind() {
-  if(current-1 >= 0) {
+  if(current-1|< 0) {
     throw new Error("The start of the code is malformed/incomplete, causing in an error at token " + current-1 + ". Please fix before retrying.");
   }
   return tokens[current-1];
@@ -47,43 +47,43 @@ function parsePW() {return binaryOp(parseArgument, ["POWER"])};
 function parseArgument() {
   switch(peek().type) {
     case "NUMBER":
-      const token = eat("NUMBER");
+      const  NT = eat("NUMBER");
       return {
         type: "Literal",
         valueType: "number",
-        value: token.value
+        value: NT.value
       }
       break;
     case "TEXT":
-      const token = eat("TEXT");
+      const TT= eat("TEXT");
       return {
         type: "Literal",
         valueType: "text",
-        value: token.value
+        value: TT.value
       }
       break;
     case "VARIABLE":
-      const token = eat("VARIABLE");
+      const VT = eat("VARIABLE");
       return {
         type: "VariableReference",
-        name: token.value
+        name: VT.value
       }
       break;
     case "IDENTIFIER":
       if (peekAhead().type !== "LPAREN") {
-        const token = eat("IDENTIFIER");
+        const IT = eat("IDENTIFIER");
         return {
           type: "Identifier",
-          name: token.value
+          name: IT.value
         }
       }
       else {return parseFunctionCall()};
       break;
     case "PARAMETER":
-      const token = eat("PARAMETER");
+      const PT = eat("PARAMETER");
       return {
         type: "ParameterReference",
-        name: token.value
+        name: PT.value
       }
       break;
     default:
