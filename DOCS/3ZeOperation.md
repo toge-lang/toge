@@ -33,31 +33,28 @@ for(#a; #a > 10; [wait(s, 1); #a = #a + 1]);
 Now dont get too hasty, theres still the operators!!
 Come on, NOW get hasty, speedrun!!
 ```
-+ plus
-- minus
-* times
-/ divided by(result)
-% divided by(remainder)
-? conditional equals
-?? conditional strict equals(same type only)
-= equals
-== strict equals(same type only)
-+= equals, but add with the original value                                  }
--= equals, but subtract from the original value                             }
-*= equals, but multiply the original value with it                          } ONLY WORKS WITH INTEGERS 
-/= equals, but divide the original value with it (result)                   } AND INTEGERS WITH DECIMALS
-%= equals, but divide the original value with it (remainder)                }
-^= equals, but give the original value with the power of the given number   }
-^ to the power of
-> greater than
-< smaller tham
->= greater/equal
-<= smaller/equal
-!(compare operator) opposite of operator
-+++ AND
--+- NOT
-|+| OR
-|-| XOR --- Rather simple: if one or the other are true, it is true. If more than 2 or all of them are true, it is false. ---
+x + y | x plus y
+x - y | x minus y
+x * y | x times y
+x / y | x divided by y (result)
+x % y | x divided by y (remainder)
+x ^ y | x * x, y times
+x ? y | if x is equal to y
+x = y | x equals y
+x += y| x equals x + y                      
+x -= y| x equals x - y                       
+x *= y| x equals x * y                 
+x /= y| x equals x / y
+x %= y| x equals x % y
+x ^= y| x equals x * x, y times
+x > y| x greater than y
+x < y| x smaller than y
+x >? y| x greater than OR equal to y
+x <? y| x smaller than/equal to y
+x +++ y| x AND y
+!x| NOT x (can be used behind paranthesis(e.g. !(parseUnary()), states(e.g. !true) or conditional operators(e.g. !?))
+x |+| y| x OR y
+x |-| y| x XOR y (x can be true and y can be false/x can be false and y can be true)
 ```
 ---
 
