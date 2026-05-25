@@ -1,4 +1,4 @@
-// ----------------------------------------------------------------------------------------------------------- LEXER ----------------------------------------------------------------------------------------------------------------//
+6// ----------------------------------------------------------------------------------------------------------- LEXER ----------------------------------------------------------------------------------------------------------------//
 const sCT = { // single character tokens
   '(': {type: "LPAREN", length: 1},
   ')': {type: "RPAREN", length: 1},
@@ -119,7 +119,7 @@ function tokenize(source) {
            }
          break;
         }
-        else if(source[pos+1] in whitespace) {throw new Error("A lone ! is found at line " + line + ", column " + column + ". Please fix before retrying.")};
+        else if(source[pos+1] in whitespace) {throw new Error("A lone ! is found at line " + line + ", column " + column + ". Please fix before retrying.")}
         else {tokens.push(createToken("NOT_GATE", '!', line, column))};
         break;
       //---\\
