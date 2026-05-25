@@ -14,7 +14,7 @@ const sCT = { // single character tokens
 }
 const mCT = { // multi character tokens
   '+': [{next: '++', type: 'AND_GATE', value: '+++', length: 3}, {next: '=', type: 'PLUS_EQ', value: '+=', length: 2}, {type: 'PLUS', value: '+', length: 1}],
-  '-': [{next: '+-', type: 'NOT_GATE', value: '-+-', length: 3}, {next: '=', type: 'MINUS_EQ', value: '-=', length: 2}, {type: 'MINUS', value: '-', length: 1}],
+  '-': [{next: '=', type: 'MINUS_EQ', value: '-=', length: 2}, {type: 'MINUS', value: '-', length: 1}],
   '*': [{next: '=', type: "TIMES_EQ", value: '*=', length : 2}, {type: 'TIMES', value: '*', length: 1}],
   '/': [{next: '=', type: "DIVIDERS_EQ", value: '/=', length : 2}, {type: 'DIVIDE_RS', value: '/', length: 1}],
   '%': [{next: '=', type: "DIVIDERM_EQ", value: '%=', length : 2}, {type: 'DIVIDE_RM', value: '%', length: 1}],
@@ -120,6 +120,7 @@ function tokenize(source) {
          break;
         }
         else if(source[pos+1] in whitespace) {throw new Error("A lone ! is found at line " + line + ", column " + column + ". Please fix before retrying.")};
+        else {tokens.push(createToken("NOT_GATE", '!', line, column))};
         break;
       //---\\
       // collecting-type tokens(creates a variable and collects until a certain condition, and pushes the token with the value being said variable)
