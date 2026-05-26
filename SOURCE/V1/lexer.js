@@ -1,37 +1,17 @@
-6// ----------------------------------------------------------------------------------------------------------- LEXER ----------------------------------------------------------------------------------------------------------------//
-const sCT = { // single character tokens
-  '(': {type: "LPAREN", length: 1},
-  ')': {type: "RPAREN", length: 1},
-  '[': {type: "LBRACKET", length: 1},
-  ']': {type: "RBRACKET", length: 1},
-  '{': {type: "LBRACE", length: 1},
-  '}': {type: "RBRACE", length: 1},
-  ',': {type: "COMMA", length: 1},
-  ';': {type: "SEMICOLON", length: 1},
-  ':': {type: "COLON", length: 1},
-  '?': {type: "COND_EQ", length: 1},
-  '=': {type: "EQ", length: 1}
-}
-const mCT = { // multi character tokens
-  '+': [{next: '++', type: 'AND_GATE', value: '+++', length: 3}, {next: '=', type: 'PLUS_EQ', value: '+=', length: 2}, {type: 'PLUS', value: '+', length: 1}],
-  '-': [{next: '=', type: 'MINUS_EQ', value: '-=', length: 2}, {type: 'MINUS', value: '-', length: 1}],
-  '*': [{next: '=', type: "TIMES_EQ", value: '*=', length : 2}, {type: 'TIMES', value: '*', length: 1}],
-  '/': [{next: '=', type: "DIVIDERS_EQ", value: '/=', length : 2}, {type: 'DIVIDE_RS', value: '/', length: 1}],
-  '%': [{next: '=', type: "DIVIDERM_EQ", value: '%=', length : 2}, {type: 'DIVIDE_RM', value: '%', length: 1}],
-  '^': [{next: '=', type: "POWER_EQ", value: '^=', length : 2}, {type: 'POWER', value: '^', length: 1}],
-  '>': [{next: '?', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
-  '<': [{next: '?', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
-  '|': [{next: '+|', type: "OR_GATE", value: '|+|', length : 3}, {next: '-|', type: "XOR_GATE", value: '|-|', length: 3}]
-}
-const nT = { // negatable tokens(ones where you can add a ! before them and they are still valid)
-  '>': [{next: '?', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}],
-  '<': [{next: '?', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}],
-  '?': [{type: "COND_EQ", value: '?', length: 1}]
-}
-const cTT = { // collecting-type tokens(value as a variable that keeps collecting until a certain point)
-  '$': [{type: "PARAMETER"}], '#': [{type: "VARIABLE"}], '"': [{type: "TEXT"}], "'": [{type: "TEXT"}]
-}
-const whitespace = [' ', '\n', '\r', '\t'];
+// ----------------------------------------------------------------------------------------------------------- LEXER ----------------------------------------------------------------------------------------------------------------//
+//--- token types ---//
+
+// single character tokens
+const sCT = {'(': {type: "LPAREN", length: 1}, ')': {type: "RPAREN", length: 1}, '[': {type: "LBRACKET", length: 1}, ']': {type: "RBRACKET", length: 1}, '{': {type: "LBRACE", length: 1}, '}': {type: "RBRACE", length: 1}, ',': {type: "COMMA", length: 1}, ';': {type: "SEMICOLON", length: 1}, ':': {type: "COLON", length: 1}, '?': {type: "COND_EQ", length: 1}, '=': {type: "EQ", length: 1}};
+// multi-character tokens
+const mCT = {'+': [{next: '++', type: 'AND_GATE', value: '+++', length: 3}, {next: '=', type: 'PLUS_EQ', value: '+=', length: 2}, {type: 'PLUS', value: '+', length: 1}], '-': [{next: '=', type: 'MINUS_EQ', value: '-=', length: 2}, {type: 'MINUS', value: '-', length: 1}], '*': [{next: '=', type: "TIMES_EQ", value: '*=', length : 2}, {type: 'TIMES', value: '*', length: 1}], '/': [{next: '=', type: "DIVIDERS_EQ", value: '/=', length : 2}, {type: 'DIVIDE_RS', value: '/', length: 1}], '%': [{next: '=', type: "DIVIDERM_EQ", value: '%=', length : 2}, {type: 'DIVIDE_RM', value: '%', length: 1}], '^': [{next: '=', type: "POWER_EQ", value: '^=', length : 2}, {type: 'POWER', value: '^', length: 1}], '>': [{next: '?', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}], '<': [{next: '?', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}], '|': [{next: '+|', type: "OR_GATE", value: '|+|', length : 3}, {next: '-|', type: "XOR_GATE", value: '|-|', length: 3}]};
+// negatable tokens(ones where you can add a ! before them and they are still valid)
+const nT = {'>': [{next: '?', type: "BIGGER_EQ", value: '>?', length : 2}, {type: 'BIGGER', value: '>', length: 1}], '<': [{next: '?', type: "SMALLER_EQ", value: '<?', length : 2}, {type: 'SMALLER', value: '<', length: 1}], '?': [{type: "COND_EQ", value: '?', length: 1}]};
+// collecting-type tokens(value as a variable that keeps collecting until a certain point)
+const cTT = {'$': [{type: "PARAMETER"}], '#': [{type: "VARIABLE"}], '"': [{type: "TEXT"}], "'": [{type: "TEXT"}]};
+// whitespace
+const wS = [' ', '\n', '\r', '\t'];
+//--- helper functions ---//
 function isDigit(char) {return char >= '0' && char <= '9'}; // digit checker
 function isLetter(char) {return (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')}; // letter checker
 function isAlphaNumeric(char) {return isDigit(char) || isLetter(char)}; // letter OR digit checker
@@ -43,6 +23,7 @@ function createToken(type, value, line, column) { // token creator
     column: column
   }
 }
+//--- tokenizer function ---//
 function tokenize(source) { 
   let tokens = []; 
   let pos = 0; // N-th character of source
@@ -82,48 +63,47 @@ function tokenize(source) {
           throw new Error("A lone | is found at line " + line + ", column " + column + ". Please fix before retrying.");
         }
         break;  
-      //---\\
-      case char in whitespace:
-        if (char === '\n') {line++; column = 0}; // get to the next line if user pressed enter...
-        move(); // ...and move past whitespace.
-        break;
-      //---\\  
-      case char in cTT:
-        let val = ``; 
-        move();
-        if(char === '$' || char === '#') {while(pos < source.length && isAlphaNumeric(source[pos])) {val += source[pos]; move()}};
-        else {while(pos < source.length && source[pos] !== char) {val += source[pos]; move()}};
-        tokens.push(createToken(cTT[char].type, val, line, column));
-        break;
-      //---\\ 
       case char === '!': // mCT check but with some extra stuff and only nT characters
-         if(source[pos+1] in nT) { // check if next token is negatable...
-           const options = nT[source[pos+1]]; //...list all possible options...
-           let matched = false; // ...track state...
-           let j = 0; // create counter variable...
-           while(j < options.length && !matched) { // ...while there are options left and token isn't matched to one of them yet...
-             const option = options[j]; // ...check for the J-th option...
-             let shouldMatch = true; // ...make it possible to match...
-             if(option.next) { // ...if option contains other characters than the current one...
-               const nextChars = source.substring(pos + 2, pos + 2 + option.next.length); // ...get actual next characters...
-               if(nextChars !== option.next) { // ...if the prediction doesnt match the reality...
-                 shouldMatch = false; //...assume prediction was false...
-               }
-             }    
-             if(shouldMatch) {//...but if it was true...
-               tokens.push(createToken("NOT_" + option.type, '!' + option.value, line, column)); // push token with the option's info..
-               move(option.length + 1); // move past the token...
-               matched = true; //...and end the loop.
+        if(source[pos+1] in nT) { // check if next token is negatable...
+        const options = nT[source[pos+1]]; //...list all possible options...
+        let matched = false; // ...track state...
+        let j = 0; // create counter variable...
+        while(j < options.length && !matched) { // ...while there are options left and token isn't matched to one of them yet...
+          const option = options[j]; // ...check for the J-th option...
+          let shouldMatch = true; // ...make it possible to match...
+          if(option.next) { // ...if option contains other characters than the current one...
+            const nextChars = source.substring(pos + 2, pos + 2 + option.next.length); // ...get actual next characters...
+            if(nextChars !== option.next) { // ...if the prediction doesnt match the reality...
+              shouldMatch = false; //...assume prediction was false...
             }
-             j++; // oh and if it didnt match, continue the loop.
-           }
+          }    
+          if(shouldMatch) {//...but if it was true...
+            tokens.push(createToken("NOT_" + option.type, '!' + option.value, line, column)); // push token with the option's info..
+            move(option.length + 1); // move past the token...
+            matched = true; //...and end the loop.
+          }
+          j++; // oh and if it didnt match, continue the loop.
+        }
          break;
         }
         else if(source[pos+1] in whitespace) {throw new Error("A lone ! is found at line " + line + ", column " + column + ". Please fix before retrying.")}
         else {tokens.push(createToken("NOT_GATE", '!', line, column))};
         break;
       //---\\
-      // collecting-type tokens(creates a variable and collects until a certain condition, and pushes the token with the value being said variable)
+      case char in wS:
+        if (char === '\n') {line++; column = 0}; // get to the next line if user pressed enter...
+        move(); // ...and move past whitespace.
+        break;
+      //---\\  
+      // collecting-type tokens
+      case char in cTT:
+        let val = ``; // create a variable...
+        move(); // ...move past original symbol...
+        if(char === '$' || char === '#') {while(pos < source.length && isAlphaNumeric(source[pos])) {val += source[pos]; move()}}; // keep collecting until a certain point...
+        else {while(pos < source.length && source[pos] !== char) {val += source[pos]; move()}}; // ...x2...
+        tokens.push(createToken(cTT[char].type, val, line, column)); // and push the token with value being said variable.
+        break;
+      //---\\ 
       case isDigit(char):
         let number = ``; // creates a variable...
         const nextChar = source[pos+1];
@@ -151,7 +131,6 @@ function tokenize(source) {
         
       default:
         throw new Error("A character isn't recognized, more specifically the '" + char + "' character, at line " + line + ", column " + column + ". Please fix it before retrying."); // error code 1
-        break; 
     }
   }
   tokens.push(createToken("EOF", null, line, column)); // end of file reached, tokenization done
